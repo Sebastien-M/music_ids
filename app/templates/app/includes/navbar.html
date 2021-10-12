@@ -1,0 +1,29 @@
+<nav>
+    <div class="nav-wrapper grey row darken-3">
+        <div class="col s12">
+            <a href="{% url "index-view" %}" class="brand-logo">Music Ids <small style="font-size: small">(Alpha
+                version {{ version }})</small></a>
+            <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+            <ul class="right hide-on-med-and-down">
+                <li><a href="{% url "ideas-list" %}">Liste Des Projets</a></li>
+                <li><a href="badges.html">Créer un Projet</a></li>
+                <li><a href="badges.html">Trucs utiles</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<ul class="sidenav" id="mobile-demo">
+    <li><a href="{% url "ideas-list" %}">Liste Des Projets</a></li>
+    <li><a href="badges.html">Créer un Projet</a></li>
+    <li><a href="badges.html">Trucs utiles</a></li>
+</ul>
+
+{% block js %}
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            let elems = document.querySelectorAll('.sidenav');
+            M.Sidenav.init(elems);
+        });
+    </script>
+{% endblock %}

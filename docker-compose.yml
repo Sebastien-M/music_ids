@@ -1,0 +1,24 @@
+version: '3.1'
+
+services:
+  db:
+    image: mariadb
+    ports:
+      - '3306:3306'
+    environment:
+       MYSQL_DATABASE: '${DB_NAME}'
+       MYSQL_USER: '${DB_USER}'
+       MYSQL_PASSWORD: '${DB_PASSWORD}'
+       MYSQL_ROOT_PASSWORD: '${DB_PASSWORD}'
+
+  web:
+    build: .
+    command: python manage.py runserver 0.0.0.0:${APPLICATION_PORT}
+    volumes:
+      - .:/app
+    stdin_open: true # For dev env
+    tty: true        # For dev env
+    ports:
+      - "${APPLICATION_PORT}:${APPLICATION_PORT}"
+    depends_on:
+      - db

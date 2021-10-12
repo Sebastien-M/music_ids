@@ -1,0 +1,19 @@
+{% extends "app/base.html" %}
+{% block content %}
+    <section class="main container">
+        <ul class="collection">
+            {% for project in projects %}
+                <li class="collection-item avatar">
+                    <i class="material-icons circle">folder</i>
+                    <span class="title">Nom: {{ project.name }}</span>
+                    <p>Créé par: {{ project.creator.username }} <br>
+                        Créé le: {{ project.created_at|date:"d/m/Y à H:i" }}
+                        <span class="right"><a href="{% url "ideas-detail" project.pk %}">Voir le projet</a></span>
+
+                    </p>
+                    <a href="#!" class="secondary-content"><i class="material-icons" style="color: orange">grade</i></a>
+                </li>
+            {% endfor %}
+        </ul>
+    </section>
+{% endblock %}
