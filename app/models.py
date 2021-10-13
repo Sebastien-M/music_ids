@@ -26,6 +26,7 @@ class Project(models.Model):
         self.modified_at = timezone.now()
         return super(Project, self).save(*args, **kwargs)
 
+    @property
     def joined_files(self):
         file_types = {
             ProjectFileTypeChoices.AUDIO_FILE.name: False,
@@ -33,8 +34,7 @@ class Project(models.Model):
             ProjectFileTypeChoices.ABLETON_PROJECT_FILE.name: False
                       }
         for file in self.files.all():
-            print(file.project_file_type)
-            file_types[file.project_file_type] = True
+            file_types[file.project_file_type] = file
         return file_types
 
 
