@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from app.models import Project, ProjectFile
+from app.models import Project, ProjectFile, MidUser
 
 
 class ProjectFileInline(admin.StackedInline):
@@ -13,3 +13,4 @@ class ProjectAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Project, ProjectAdmin)
+admin.site.register(MidUser)

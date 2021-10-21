@@ -1,0 +1,66 @@
+{% extends "app/base.html" %}
+{% block content %}
+    <section class="main container main-form">
+        <div class="card">
+            <div class="card-content center">
+                <form method="POST">
+                    {% csrf_token %}
+                    <div class="input-field col s6">
+                        <input id="id_username"
+                               name="{{ form.username.name }}"
+                               type="text"
+                               {% if form.username.value != None %}value="{{ form.username.value|stringformat:'s' }}"{% endif %}
+                               class="validate {% if form.username.errors %}invalid{% endif %}">
+                        <label for="id_username">Nom d'utilisateur</label>
+                        <span class="helper-text" data-error="{{ form.username.errors.0 }}"></span>
+                    </div>
+                    <div class="input-field col s6">
+                        <input id="id_first_name"
+                               name="{{ form.first_name.name }}"
+                               type="text"
+                               {% if form.first_name.value != None %}value="{{ form.first_name.value|stringformat:'s' }}"{% endif %}
+                               class="validate {% if form.first_name.errors %}invalid{% endif %}">
+                        <label for="id_first_name">{{ form.first_name.label }}</label>
+                        <span class="helper-text" data-error="{{ form.first_name.errors.0 }}"></span>
+                    </div>
+                    <div class="input-field col s6">
+                        <input id="id_last_name"
+                               name="{{ form.last_name.name }}"
+                               type="text"
+                               {% if form.last_name.value != None %}value="{{ form.last_name.value|stringformat:'s' }}"{% endif %}
+                               class="validate {% if form.last_name.errors %}invalid{% endif %}">
+                        <label for="id_last_name">{{ form.last_name.label }}</label>
+                        <span class="helper-text" data-error="{{ form.last_name.errors.0 }}"></span>
+                    </div>
+                    <div class="input-field col s6">
+                        <input id="id_email"
+                               name="{{ form.email.name }}"
+                               type="email"
+                               {% if form.email.value != None %}value="{{ form.email.value|stringformat:'s' }}"{% endif %}
+                               class="validate {% if form.email.errors %}invalid{% endif %}">
+                        <label for="id_email">{{ form.email.label }}</label>
+                        <span class="helper-text" data-error="{{ form.email.errors.0 }}"></span>
+                    </div>
+                    <div class="input-field col s6">
+                        <input id="id_password1"
+                               name="{{ form.password1.name }}"
+                               type="password"
+                               class="validate {% if form.password1.errors %}invalid{% endif %}">
+                        <label for="id_password1">{{ form.password1.label }}</label>
+                        <span class="helper-text" data-error="{{ form.password1.errors.0 }}"></span>
+                    </div>
+                    <div class="input-field col s6">
+                        <input id="id_password2"
+                               name="{{ form.password2.name }}"
+                               type="password"
+                               class="validate {% if form.password2.errors %}invalid{% endif %}">
+                        <label for="id_password2">{{ form.password2.label }}</label>
+                        <span class="helper-text" data-error="{{ form.password2.errors.0 }}"></span>
+                    </div>
+                    <button class="btn">Créer un compte</button>
+                </form>
+
+            </div>
+        </div>
+    </section>
+{% endblock %}

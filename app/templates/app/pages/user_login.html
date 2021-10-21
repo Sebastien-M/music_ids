@@ -1,0 +1,41 @@
+{% extends "app/base.html" %}
+{% block content %}
+
+    <section class="main container main-form">
+        <div class="card">
+            <div class="card-content center">
+                <form method="POST">
+                    {% csrf_token %}
+
+                    <div class="input-field col s6">
+                        <input id="id_username"
+                               name="{{ form.username.name }}"
+                               type="text"
+                               {% if form.username.value != None %}value="{{ form.username.value|stringformat:'s' }}"{% endif %}
+                               class="validate {% if form.username.errors %}invalid{% endif %}">
+                        <label for="id_username">Nom d'utilisateur</label>
+                        <span class="helper-text" data-error="{{ form.username.errors.0 }}"></span>
+                    </div>
+
+                    <div class="input-field col s6">
+                        <input id="id_password"
+                               name="{{ form.password.name }}"
+                               type="password"
+                               {% if form.password.value != None %}value="{{ form.password.value|stringformat:'s' }}"{% endif %}
+                               class="validate {% if form.password.errors %}invalid{% endif %}">
+                        <label for="id_password">{{ form.password.label }}</label>
+                        <span class="helper-text" data-error="{{ form.password.errors.0 }}"></span>
+                    </div>
+
+                    {% if form.errors %}
+                        <div id="form-error" style="margin: 10px 0 10px 0">
+                            <p class="red-text">Nom d'utilisateur ou mot de passe incorrect</p>
+                        </div>
+                    {% endif %}
+                    <button class="btn">Connexion</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+{% endblock %}
