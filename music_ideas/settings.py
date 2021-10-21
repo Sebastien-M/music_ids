@@ -136,3 +136,4 @@ MEDIA_ROOT = os.path.join(BASE_DIR, config('MEDIA_ROOT_FOLDER'))
 MEDIA_URL = '/media/'
 STATIC_ROOT = os.path.join(BASE_DIR, config('STATIC_ROOT_FOLDER'))
 VERSION = "0.0.1"
+AUTH_USER_MODEL = "app.MidUser"

@@ -1,16 +1,35 @@
-from django.contrib.auth.models import User
+from django.contrib.auth.models import AbstractUser
+from django.contrib.auth.validators import UnicodeUsernameValidator
 from django.core.exceptions import ValidationError
 from django.db import models
 from django.urls import reverse
 from django.utils import timezone
 from django.utils.text import slugify
+from django.utils.translation import ugettext_lazy as _
 
 from app.enums import VALID_AUDIO_FILE_TYPES, ProjectFileTypeChoices
+from app.managers import CustomUserManager
+
+
+class MidUser(AbstractUser):
+    email = models.EmailField(_('email address'), unique=True, db_index=True)
+    username = models.CharField(error_messages={'unique': _('A user with that username already exists.')},
+                                help_text=_('Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.'),
+                                max_length=20, unique=True,
+                                validators=[UnicodeUsernameValidator()],
+                                verbose_name='username',
+                                db_index=True)
+    REQUIRED_FIELDS = ["email"]
+
+    objects = CustomUserManager()
+
+    def __str__(self):
+        return self.email
 
 
 class Project(models.Model):
     name = models.CharField(max_length=100)
-    creator = models.ForeignKey(User, on_delete=models.CASCADE)
+    creator = models.ForeignKey(MidUser, on_delete=models.CASCADE)
     created_at = models.DateTimeField(blank=True, null=True)
     modified_at = models.DateTimeField(blank=True, null=True)
 
@@ -32,7 +51,7 @@ class Project(models.Model):
             ProjectFileTypeChoices.AUDIO_FILE.name: False,
             ProjectFileTypeChoices.MUSIC_SHEET.name: False,
             ProjectFileTypeChoices.ABLETON_PROJECT_FILE.name: False
-                      }
+        }
         for file in self.files.all():
             file_types[file.project_file_type] = file
         return file_types
@@ -73,5 +92,5 @@ class ProjectFile(models.Model):
 
 
 class FavoriteProject(models.Model):
-    user = models.ForeignKey(User, related_name="favorites", on_delete=models.CASCADE)
+    user = models.ForeignKey(MidUser, related_name="favorites", on_delete=models.CASCADE)
     project = models.ForeignKey(Project, on_delete=models.CASCADE)
