@@ -6,9 +6,9 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import redirect
 from django.urls import reverse, reverse_lazy
 from django.views import View
-from django.views.generic import ListView, CreateView, TemplateView, DetailView
+from django.views.generic import ListView, CreateView, TemplateView, DetailView, UpdateView
 
-from app.forms import UserForm, ProjectCreateForm
+from app.forms import UserForm, ProjectCreateForm, ProjectUpdateForm
 from app.models import Project
 
 
@@ -76,3 +76,18 @@ class ProjectCreateView(LoginRequiredMixin, CreateView):
 
     def get_success_url(self):
         return reverse_lazy("ideas-list")
+
+
+class ProjectUpdateView(LoginRequiredMixin, UpdateView):
+    login_url = reverse_lazy("user-login")
+    model = Project
+    template_name = "app/pages/project_update.html"
+    form_class = ProjectUpdateForm
+
+    def get_form_kwargs(self):
+        form_kwargs = super(ProjectUpdateView, self).get_form_kwargs()
+        form_kwargs["user"] = self.request.user
+        return form_kwargs
+
+    def get_success_url(self):
+        return reverse_lazy("ideas-detail", kwargs={"pk": self.object.pk})
