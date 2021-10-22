@@ -8,7 +8,7 @@ from django.urls import reverse, reverse_lazy
 from django.views import View
 from django.views.generic import ListView, CreateView, TemplateView, DetailView
 
-from app.forms import UserForm
+from app.forms import UserForm, ProjectCreateForm
 from app.models import Project
 
 
@@ -56,4 +56,10 @@ class ProjectDetailView(LoginRequiredMixin, DetailView):
 class ProjectCreateView(LoginRequiredMixin, CreateView):
     login_url = reverse_lazy("user-login")
     model = Project
-    template_name = ""
+    template_name = "app/pages/project_create.html"
+    form_class = ProjectCreateForm
+
+    def get_form_kwargs(self):
+        form_kwargs = super(ProjectCreateView, self).get_form_kwargs()
+        form_kwargs["user"] = self.request.user
+        return form_kwargs

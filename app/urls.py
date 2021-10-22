@@ -1,6 +1,7 @@
 from django.urls import path
 
-from app.views import ProjectListView, IndexView, ProjectDetailView, UserCreateView, UserLoginView, UserLogOutView
+from app.views import ProjectListView, IndexView, ProjectDetailView, UserCreateView, UserLoginView, UserLogOutView, \
+    ProjectCreateView
 
 urlpatterns = [
     path("", view=IndexView.as_view(), name="index-view"),
@@ -9,4 +10,5 @@ urlpatterns = [
     path("ideas/", view=ProjectListView.as_view(), name="ideas-list"),
     path("new_user/", view=UserCreateView.as_view(), name="user-create"),
     path("ideas/<int:pk>", view=ProjectDetailView.as_view(), name="ideas-detail"),
+    path("ideas/create/", view=ProjectCreateView.as_view(), name="ideas-create"),
 ]
