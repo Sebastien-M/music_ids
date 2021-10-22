@@ -36,8 +36,6 @@ class Project(models.Model):
     def __str__(self):
         return self.name
 
-    def get_absolute_url(self):
-        return reverse("project-detail", kwargs={"slug": slugify(self.name)})
 
     def save(self, *args, **kwargs):
         if not self.id:

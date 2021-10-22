@@ -77,3 +77,64 @@ class ProjectCreateForm(ModelForm):
             except AttributeError:
                 pass
         return False
+
+
+class ProjectUpdateForm(ModelForm):
+    class Meta:
+        model = Project
+        fields = ("name", "audio_file")
+
+    name = forms.CharField(label="Nom du projet")
+    audio_file = forms.FileField(label="Fichier audio", required=False)
+    music_sheet = forms.FileField(label="Tablature", required=False)
+    ableton_project_file = forms.FileField(label="Projet Ableton", required=False)
+
+    def __init__(self, *args, **kwargs):
+        self.user = kwargs.pop("user")
+        super(ProjectUpdateForm, self).__init__(*args, **kwargs)
+
+    def is_valid(self):
+        is_valid = super(ProjectUpdateForm, self).is_valid()
+        audio_file = self.cleaned_data.get("audio_file")
+        if audio_file and not ProjectCreateForm.is_valid_audio_file(audio_file):
+            self.add_error("audio_file", ValidationError("Vous devez choisir un fichier audio"))
+            is_valid = False
+        return is_valid
+
+    def save(self, commit=True):
+        project = super(ProjectUpdateForm, self).save(commit)
+        audio_file = self.cleaned_data.get("audio_file")
+        music_sheet = self.cleaned_data.get("music_sheet")
+        ableton_project_file = self.cleaned_data.get("ableton_project_file")
+        if audio_file:
+            ProjectFile.objects.update_or_create(
+                project_file_type=ProjectFileTypeChoices.AUDIO_FILE.name,
+                project=project,
+                defaults={
+                    "file": audio_file,
+                    "name": audio_file._name,
+                    "uploaded_at": timezone.now()
+                }
+            )
+
+        if music_sheet:
+            ProjectFile.objects.update_or_create(
+                project_file_type=ProjectFileTypeChoices.MUSIC_SHEET.name,
+                project=project,
+                defaults={
+                    "file": music_sheet,
+                    "name": music_sheet._name,
+                    "uploaded_at": timezone.now()
+                }
+            )
+        if ableton_project_file:
+            ProjectFile.objects.update_or_create(
+                project_file_type=ProjectFileTypeChoices.ABLETON_PROJECT_FILE.name,
+                project=project,
+                defaults={
+                    "file": ableton_project_file,
+                    "name": ableton_project_file._name,
+                    "uploaded_at": timezone.now()
+                }
+            )
+        return project

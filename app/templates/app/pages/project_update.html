@@ -1,0 +1,15 @@
+{% extends "app/base.html" %}
+{% load materializecss %}
+{% block content %}
+    <section class="main container main-form">
+        <div class="card">
+            <div class="card-content center">
+                <form method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {{ form|materializecss }}
+                    <button class="btn">Modifier</button>
+                </form>
+            </div>
+        </div>
+    </section>
+{% endblock %}
