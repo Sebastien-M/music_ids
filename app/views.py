@@ -46,6 +46,16 @@ class ProjectListView(LoginRequiredMixin, ListView):
     template_name = "app/pages/project_list.html"
 
 
+class PersonalProjectListView(LoginRequiredMixin, ListView):
+    login_url = reverse_lazy("user-login")
+    model = Project
+    context_object_name = "projects"
+    template_name = "app/pages/project_list.html"
+
+    def get_queryset(self):
+        return super(PersonalProjectListView, self).get_queryset().filter(creator=self.request.user)
+
+
 class ProjectDetailView(LoginRequiredMixin, DetailView):
     login_url = reverse_lazy("user-login")
     model = Project
@@ -63,3 +73,6 @@ class ProjectCreateView(LoginRequiredMixin, CreateView):
         form_kwargs = super(ProjectCreateView, self).get_form_kwargs()
         form_kwargs["user"] = self.request.user
         return form_kwargs
+
+    def get_success_url(self):
+        return reverse_lazy("ideas-list")
