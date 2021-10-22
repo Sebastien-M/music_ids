@@ -46,16 +46,18 @@ class ProjectCreateForm(ModelForm):
                                    uploaded_at=timezone.now(),
                                    project_file_type=ProjectFileTypeChoices.AUDIO_FILE.name,
                                    project=project)
-        ProjectFile.objects.create(name=music_sheet._name,
-                                   file=music_sheet,
-                                   uploaded_at=timezone.now(),
-                                   project_file_type=ProjectFileTypeChoices.MUSIC_SHEET.name,
-                                   project=project)
-        ProjectFile.objects.create(name=ableton_project_file._name,
-                                   file=ableton_project_file,
-                                   uploaded_at=timezone.now(),
-                                   project_file_type=ProjectFileTypeChoices.ABLETON_PROJECT_FILE.name,
-                                   project=project)
+        if music_sheet:
+            ProjectFile.objects.create(name=music_sheet._name,
+                                       file=music_sheet,
+                                       uploaded_at=timezone.now(),
+                                       project_file_type=ProjectFileTypeChoices.MUSIC_SHEET.name,
+                                       project=project)
+        if ableton_project_file:
+            ProjectFile.objects.create(name=ableton_project_file._name,
+                                       file=ableton_project_file,
+                                       uploaded_at=timezone.now(),
+                                       project_file_type=ProjectFileTypeChoices.ABLETON_PROJECT_FILE.name,
+                                       project=project)
         return Project
 
     def is_valid(self):

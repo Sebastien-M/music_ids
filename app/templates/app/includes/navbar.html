@@ -8,6 +8,7 @@
             <ul class="right hide-on-med-and-down">
                 {% if user.is_authenticated %}
                     <li><a href="{% url "ideas-list" %}">Liste Des Projets</a></li>
+                    <li><a href="{% url "personal-ideas-list" %}">Mes Projets</a></li>
                     <li><a href="{% url "ideas-create" %}">Créer un Projet</a></li>
                     <li><a href="#">Trucs utiles</a></li>
                     <li>
