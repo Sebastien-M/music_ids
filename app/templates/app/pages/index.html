@@ -1,3 +1,15 @@
 {% extends "app/base.html" %}
+{% load static %}
 {% block content %}
+    <section class="landing-page white-text"
+             style="background: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)), url('{% static "images/bg2.jpg" %}');">
+        <div class="main-title">
+            <h4 class="center-align">
+                En manque d'inspiration?
+            </h4>
+            <h5 class="center-align">
+                Music Ids vous permet de partager, découvrir et contribuer à des créations musicales
+            </h5>
+        </div>
+    </section>
 {% endblock %}

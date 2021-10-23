@@ -30,3 +30,18 @@ body {
     border-bottom: 1px solid #4f4f4f !important;
     box-shadow: 0 1px 0 0 #4f4f4f !important;
 }
+
+.landing-page {
+    display: table;
+    width: 100%;
+    height: calc(100vh - 64px);
+    background-size: cover!important;
+}
+
+.main-title {
+    padding: 0;
+    margin: 0;
+    height: 100%;
+    display: table-cell;
+    vertical-align: middle;
+}
