@@ -13,7 +13,8 @@ class UserForm(UserCreationForm):
     class Meta:
         model = MidUser
         field_classes = {'username': UsernameField}
-        fields = ("username", "first_name", "last_name", "email", "password1", "password2")
+        fields = ("username", "first_name", "last_name", "email", "password1",
+                  "password2")
 
     def is_valid(self):
         return super(UserForm, self).is_valid()
@@ -27,7 +28,8 @@ class ProjectCreateForm(ModelForm):
     name = forms.CharField(label="Nom du projet")
     audio_file = forms.FileField(label="Fichier audio")
     music_sheet = forms.FileField(label="Tablature", required=False)
-    ableton_project_file = forms.FileField(label="Projet Ableton", required=False)
+    ableton_project_file = forms.FileField(label="Projet Ableton",
+                                           required=False)
 
     def __init__(self, *args, **kwargs):
         self.user = kwargs.pop("user")
@@ -39,7 +41,8 @@ class ProjectCreateForm(ModelForm):
         music_sheet = self.cleaned_data.get("music_sheet")
         ableton_project_file = self.cleaned_data.get("ableton_project_file")
 
-        project = Project.objects.create(name=self.cleaned_data.get("name"), creator=self.user,
+        project = Project.objects.create(name=self.cleaned_data.get("name"),
+                                         creator=self.user,
                                          created_at=timezone.now())
         ProjectFile.objects.create(name=audio_file._name,
                                    file=audio_file,
@@ -64,7 +67,8 @@ class ProjectCreateForm(ModelForm):
         is_valid = super(ProjectCreateForm, self).is_valid()
         audio_file = self.cleaned_data.get("audio_file")
         if not audio_file or not self.is_valid_audio_file(audio_file):
-            self.add_error("audio_file", ValidationError("Vous devez choisir un fichier audio"))
+            self.add_error("audio_file", ValidationError(
+                "Vous devez choisir un fichier audio"))
             is_valid = False
         return is_valid
 
@@ -87,7 +91,8 @@ class ProjectUpdateForm(ModelForm):
     name = forms.CharField(label="Nom du projet")
     audio_file = forms.FileField(label="Fichier audio", required=False)
     music_sheet = forms.FileField(label="Tablature", required=False)
-    ableton_project_file = forms.FileField(label="Projet Ableton", required=False)
+    ableton_project_file = forms.FileField(label="Projet Ableton",
+                                           required=False)
 
     def __init__(self, *args, **kwargs):
         self.user = kwargs.pop("user")
@@ -96,8 +101,13 @@ class ProjectUpdateForm(ModelForm):
     def is_valid(self):
         is_valid = super(ProjectUpdateForm, self).is_valid()
         audio_file = self.cleaned_data.get("audio_file")
-        if audio_file and not ProjectCreateForm.is_valid_audio_file(audio_file):
-            self.add_error("audio_file", ValidationError("Vous devez choisir un fichier audio"))
+        if audio_file and not ProjectCreateForm.is_valid_audio_file(
+                audio_file
+        ):
+            self.add_error(
+                "audio_file",
+                ValidationError("Vous devez choisir un fichier audio")
+            )
             is_valid = False
         return is_valid
 
