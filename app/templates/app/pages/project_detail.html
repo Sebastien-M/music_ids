@@ -3,23 +3,33 @@
     <div class="container main-panel">
         <div class="card">
             <div class="card-content">
-                <span class="card-title center">{{ project.name }}<span class="right" style="font-size: small">
-                    <a href="{% url "ideas-update" slug=project.slug %}">Modifier</a></span>
+                <span class="card-title center">{{ project.name }}<span
+                        class="right" style="font-size: small">
+                    {% if is_author %}
+                        <a href="{% url "ideas-update" slug=project.slug %}">Modifier</a>
+                    {% endif %}
+                </span>
                 </span><br>
-                <p>Créé le: {{ project.created_at|date:"d/m/Y" }} par <a href="#">{{ project.creator.username }}</a></p>
-                <p>Dernière modification: {{ project.modified_at|date:"d/m/Y" }}</p>
+                <p>Créé le: {{ project.created_at|date:"d/m/Y" }} par <a
+                        href="#">{{ project.creator.username }}</a></p>
+                <p>Dernière
+                    modification: {{ project.modified_at|date:"d/m/Y" }}</p>
             </div>
             <div class="card-tabs">
                 <ul class="tabs tabs-fixed-width">
-                    <li class="tab"><a class="active" href="#audio-file">Fichier audio</a></li>
+                    <li class="tab"><a class="active" href="#audio-file">Fichier
+                        audio</a></li>
                     <li class="tab"><a href="#music-sheet">Tablature</a></li>
-                    <li class="tab"><a href="#ableton-project">Projet Ableton</a></li>
+                    <li class="tab"><a href="#ableton-project">Projet
+                        Ableton</a></li>
                 </ul>
             </div>
             <div class="card-content grey lighten-4">
                 <div id="audio-file">
                     <div class="center row">
-                        <audio controls src="/media/{{ project.joined_files.AUDIO_FILE.file }}" class="col s12">
+                        <audio controls
+                               src="/media/{{ project.joined_files.AUDIO_FILE.file }}"
+                               class="col s12">
                             Your browser does not support the
                             <code>audio</code> element.
                         </audio>
@@ -28,13 +38,15 @@
                 <div id="music-sheet">
                     <div class="center">
                         <a class="waves-effect waves-light btn"
-                           href="/media/{{ project.joined_files.MUSIC_SHEET.file }}"><i class="material-icons right">file_download</i>Télécharger</a>
+                           href="/media/{{ project.joined_files.MUSIC_SHEET.file }}"><i
+                                class="material-icons right">file_download</i>Télécharger</a>
                     </div>
                 </div>
                 <div id="ableton-project">
                     <div class="center">
                         <a class="waves-effect waves-light btn"
-                           href="/media/{{ project.joined_files.ABLETON_PROJECT_FILE.file }}"><i class="material-icons right">file_download</i>Télécharger</a>
+                           href="/media/{{ project.joined_files.ABLETON_PROJECT_FILE.file }}"><i
+                                class="material-icons right">file_download</i>Télécharger</a>
                     </div>
                 </div>
             </div>
