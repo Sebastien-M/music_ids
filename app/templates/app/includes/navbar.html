@@ -49,6 +49,8 @@
         document.addEventListener('DOMContentLoaded', function () {
             let sidenav_elems = document.querySelectorAll('.sidenav');
             let dropdown_elems = document.querySelectorAll('.dropdown-trigger');
+            let tooltipped_elems = document.querySelectorAll('.tooltipped');
+            M.Tooltip.init(tooltipped_elems);
             M.Dropdown.init(dropdown_elems);
             M.Sidenav.init(sidenav_elems);
         });

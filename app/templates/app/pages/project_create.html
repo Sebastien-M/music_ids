@@ -3,13 +3,47 @@
 {% block content %}
     <section class="main container main-form">
         <div class="card">
-            <div class="card-content center">
+            <div class="card-content center ">
                 <form method="POST" enctype="multipart/form-data">
                     {% csrf_token %}
-                    {{ form|materializecss }}
-                    <button class="btn">Créer</button>
+                    <button class="new_name btn tooltipped btn-floating btn-small orange right"
+                            style="position: absolute; right: 3vw"
+                            data-position="bottom"
+                            data-tooltip="Générer un nom au hasard">
+                        <i class="material-icons">sync</i>
+                    </button>
+
+                    {{ form.name|materializecss }}
+                    {{ form.audio_file|materializecss }}
+                    {{ form.music_sheet|materializecss }}
+                    {{ form.ableton_project_file|materializecss }}
+                    <div class="col m12">
+                        <button class="btn">Créer</button>
+                    </div>
+
                 </form>
             </div>
         </div>
     </section>
+    {% block js %}
+        <script>
+            let button = document.querySelector(".new_name")
+            let name_field = document.querySelector("#id_name")
+            button.addEventListener("click", (event) => {
+                event.preventDefault();
+                let oReq = new XMLHttpRequest();
+                oReq.onload = reqListener;
+                oReq.open("get", "{% url "random-project-name" %}", true);
+                oReq.send();
+            })
+
+            function reqListener() {
+                let response = JSON.parse(this.responseText)
+                name_field.focus()
+                name_field.value = response["name"]
+            }
+
+
+        </script>
+    {% endblock %}
 {% endblock %}

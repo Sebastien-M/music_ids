@@ -1,14 +1,19 @@
+import json
+
 from django.contrib.auth import logout
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
 from django.contrib.auth.views import LoginView
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse
 from django.urls import reverse, reverse_lazy
 from django.views import View
-from django.views.generic import ListView, CreateView, TemplateView, DetailView, UpdateView
+from django.views.generic import ListView, CreateView, TemplateView, \
+    DetailView, UpdateView
 
 from app.forms import UserForm, ProjectCreateForm, ProjectUpdateForm
 from app.models import Project
+from app.utils.project_name_generator.generator import \
+    generate_random_project_name
 
 
 class UserCreateView(CreateView):
@@ -52,7 +57,8 @@ class PersonalProjectListView(LoginRequiredMixin, ListView):
     template_name = "app/pages/project_list.html"
 
     def get_queryset(self):
-        return super(PersonalProjectListView, self).get_queryset().filter(creator=self.request.user)
+        return super(PersonalProjectListView, self).get_queryset().filter(
+            creator=self.request.user)
 
 
 class ProjectDetailView(LoginRequiredMixin, DetailView):
@@ -92,3 +98,12 @@ class ProjectUpdateView(LoginRequiredMixin, UpdateView):
 
     def get_success_url(self):
         return reverse_lazy("ideas-detail", kwargs={"slug": self.object.slug})
+
+
+def random_project_name_view(request):
+    random_name = generate_random_project_name()
+    data = {"name": random_name}
+    if request.user.is_authenticated:
+        return HttpResponse(json.dumps(data), content_type="application/json")
+    else:
+        return HttpResponse(status=403)
