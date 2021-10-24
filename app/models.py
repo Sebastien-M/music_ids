@@ -1,10 +1,10 @@
+import uuid
+
 from django.contrib.auth.models import AbstractUser
 from django.contrib.auth.validators import UnicodeUsernameValidator
 from django.core.exceptions import ValidationError
 from django.db import models
-from django.urls import reverse
 from django.utils import timezone
-from django.utils.text import slugify
 from django.utils.translation import ugettext_lazy as _
 
 from app.enums import VALID_AUDIO_FILE_TYPES, ProjectFileTypeChoices
@@ -29,6 +29,7 @@ class MidUser(AbstractUser):
 
 class Project(models.Model):
     name = models.CharField(max_length=100)
+    slug = models.CharField(max_length=6, unique=True, blank=True)
     creator = models.ForeignKey(MidUser, on_delete=models.CASCADE)
     created_at = models.DateTimeField(blank=True, null=True)
     modified_at = models.DateTimeField(blank=True, null=True)
@@ -36,12 +37,23 @@ class Project(models.Model):
     def __str__(self):
         return self.name
 
-
     def save(self, *args, **kwargs):
         if not self.id:
             self.created_at = timezone.now()
+            self.slug = self.generate_slug()
         self.modified_at = timezone.now()
         return super(Project, self).save(*args, **kwargs)
+
+    @staticmethod
+    def generate_slug():
+        generated_slug = None
+        existing_slug = True
+        while existing_slug:
+            generated_slug = uuid.uuid4().hex[:6].upper()
+            project_instance = Project.objects.filter(slug=generated_slug)
+            if not project_instance.exists():
+                existing_slug = False
+        return generated_slug
 
     @property
     def joined_files(self):

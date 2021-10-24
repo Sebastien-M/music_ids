@@ -3,7 +3,6 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
 from django.contrib.auth.views import LoginView
 from django.http import HttpResponseRedirect
-from django.shortcuts import redirect
 from django.urls import reverse, reverse_lazy
 from django.views import View
 from django.views.generic import ListView, CreateView, TemplateView, DetailView, UpdateView
@@ -61,6 +60,7 @@ class ProjectDetailView(LoginRequiredMixin, DetailView):
     model = Project
     context_object_name = "project"
     template_name = "app/pages/project_detail.html"
+    slug_field = "slug"
 
 
 class ProjectCreateView(LoginRequiredMixin, CreateView):
@@ -83,6 +83,7 @@ class ProjectUpdateView(LoginRequiredMixin, UpdateView):
     model = Project
     template_name = "app/pages/project_update.html"
     form_class = ProjectUpdateForm
+    slug_field = "slug"
 
     def get_form_kwargs(self):
         form_kwargs = super(ProjectUpdateView, self).get_form_kwargs()
@@ -90,4 +91,4 @@ class ProjectUpdateView(LoginRequiredMixin, UpdateView):
         return form_kwargs
 
     def get_success_url(self):
-        return reverse_lazy("ideas-detail", kwargs={"pk": self.object.pk})
+        return reverse_lazy("ideas-detail", kwargs={"slug": self.object.slug})
