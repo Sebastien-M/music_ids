@@ -5,6 +5,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
 from django.contrib.auth.views import LoginView
 from django.http import HttpResponseRedirect, HttpResponse
+from django.shortcuts import redirect
 from django.urls import reverse, reverse_lazy
 from django.views import View
 from django.views.generic import ListView, CreateView, TemplateView, \
@@ -68,6 +69,11 @@ class ProjectDetailView(LoginRequiredMixin, DetailView):
     template_name = "app/pages/project_detail.html"
     slug_field = "slug"
 
+    def get_context_data(self, **kwargs):
+        context = super(ProjectDetailView, self).get_context_data(**kwargs)
+        context["is_author"] = self.object.creator == self.request.user
+        return context
+
 
 class ProjectCreateView(LoginRequiredMixin, CreateView):
     login_url = reverse_lazy("user-login")
@@ -90,6 +96,13 @@ class ProjectUpdateView(LoginRequiredMixin, UpdateView):
     template_name = "app/pages/project_update.html"
     form_class = ProjectUpdateForm
     slug_field = "slug"
+
+    def get(self, request, *args, **kwargs):
+        project = self.get_object()
+        if project.creator != self.request.user:
+            return redirect(
+                reverse_lazy("ideas-detail", kwargs={"slug": project.slug}))
+        return super(ProjectUpdateView, self).get(request, *args, **kwargs)
 
     def get_form_kwargs(self):
         form_kwargs = super(ProjectUpdateView, self).get_form_kwargs()
