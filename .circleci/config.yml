@@ -1,0 +1,30 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: circleci/python:3.9.0
+      - image: "mariadb:10.2.12"
+        environment:
+          MYSQL_DATABASE: ${DB_NAME}
+          MYSQL_USER: ${DB_USER}
+          MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+          MYSQL_HOST: "127.0.0.1"
+
+    working_directory: ~/music_ids
+
+    steps:
+      - checkout
+      - run:
+          name: install dependencies
+          command: |
+            pip install --user -r requirements.txt
+      - run:
+          name: "Wait for database to be available"
+          command: "dockerize -wait tcp://127.0.0.1:3306 -timeout 1m"
+      - run:
+          name: run tests
+          command: |
+            python manage.py test -v 2
+      - store_artifacts:
+          path: test-reports
+          destination: test-reports
