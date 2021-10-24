@@ -1,22 +1,33 @@
 {% extends "app/base.html" %}
 {% load materializecss %}
 {% block content %}
-
-    <section class="main container main-form">
-        <div class="card">
-            <div class="card-content center">
-                <form method="POST">
-                    {% csrf_token %}
-                    {{ form|materializecss }}
-                    {% if form.errors %}
-                        <div id="form-error" style="margin: 10px 0 10px 0">
-                            <p class="red-text">Nom d'utilisateur ou mot de passe incorrect</p>
+    <div class="row" style="margin-top: 5%">
+        <section class="main container main-form col m4 offset-m4">
+            <div class="card">
+                <div class="card-content center row">
+                    <form method="POST">
+                        {% csrf_token %}
+                        <div class="col m12 center">
+                            {{ form.username|materializecss }}
+                            {{ form.password|materializecss }}
+                            {% if form.errors %}
+                                <div id="form-error"
+                                     style="margin: 10px 0 10px 0">
+                                    <p class="red-text">Nom d'utilisateur ou
+                                        mot de
+                                        passe incorrect</p>
+                                </div>
+                            {% endif %}
+                            <div>
+                                <button class="btn">Connexion</button>
+                            </div>
                         </div>
-                    {% endif %}
-                    <button class="btn">Connexion</button>
-                </form>
+
+
+                    </form>
+                </div>
             </div>
-        </div>
-    </section>
+        </section>
+    </div>
 
 {% endblock %}
