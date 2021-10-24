@@ -4,7 +4,7 @@
         <div class="card">
             <div class="card-content">
                 <span class="card-title center">{{ project.name }}<span class="right" style="font-size: small">
-                    <a href="{% url "ideas-update" pk=project.pk %}">Modifier</a></span>
+                    <a href="{% url "ideas-update" slug=project.slug %}">Modifier</a></span>
                 </span><br>
                 <p>Créé le: {{ project.created_at|date:"d/m/Y" }} par <a href="#">{{ project.creator.username }}</a></p>
                 <p>Dernière modification: {{ project.modified_at|date:"d/m/Y" }}</p>
