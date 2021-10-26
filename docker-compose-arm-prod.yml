@@ -5,6 +5,7 @@ services:
     container_name: music_ids
     command: bash -c "python manage.py makemigrations &&
       python manage.py migrate &&
+      python manage.py collectstatic &&
       gunicorn music_ideas.wsgi -b 0.0.0.0:8085 --workers 2"
     volumes:
       - .:/app
