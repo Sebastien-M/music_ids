@@ -3,7 +3,7 @@ from django.urls import path
 from app.views import ProjectListView, IndexView, ProjectDetailView, \
     UserCreateView, UserLoginView, UserLogOutView, \
     ProjectCreateView, ProjectUpdateView, PersonalProjectListView, \
-    random_project_name_view
+    random_project_name_view, AddFavoriteView
 
 urlpatterns = [
     path("", view=IndexView.as_view(), name="index-view"),
@@ -19,6 +19,8 @@ urlpatterns = [
          name="ideas-create"),
     path("ideas/update/<slug:slug>", view=ProjectUpdateView.as_view(),
          name="ideas-update"),
+    path("ideas/favorite/<slug:slug>", view=AddFavoriteView.as_view(),
+         name="ideas-favorite"),
     path("random_project_name/", view=random_project_name_view,
          name="random-project-name")
 ]

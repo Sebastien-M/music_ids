@@ -106,6 +106,10 @@ class ProjectFile(models.Model):
 
 
 class FavoriteProject(models.Model):
-    user = models.ForeignKey(MidUser, related_name="favorites",
-                             on_delete=models.CASCADE)
-    project = models.ForeignKey(Project, on_delete=models.CASCADE)
+    user = models.ForeignKey(MidUser,
+                             related_name="favorites",
+                             on_delete=models.CASCADE,
+                             db_index=True)
+    project = models.ForeignKey(Project,
+                                on_delete=models.CASCADE,
+                                db_index=True)

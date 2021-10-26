@@ -46,7 +46,7 @@ body {
     vertical-align: middle;
 }
 
-.project-list{
+.project-list {
     margin-top: 30px;
 }
 
@@ -61,4 +61,22 @@ body {
     background-color: rgb(197, 197, 197);
     /*-webkit-transition: background-color 300ms linear;*/
     /*transition: background-color 300ms linear;*/
+}
+
+.fav-star-out {
+    transition: 0.3s;
+    color: gray;
+}
+
+.fav-star-in {
+    transition: 0.3s;
+    color: orange;
+}
+
+.fav:hover > .fav-star-out {
+    color: orange;
+}
+
+.fav:hover > .fav-star-in {
+    color: gray;
 }
