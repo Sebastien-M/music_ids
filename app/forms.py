@@ -1,3 +1,5 @@
+from urllib.request import urlretrieve
+
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, UsernameField
 from django.core.exceptions import ValidationError
@@ -18,6 +20,17 @@ class UserForm(UserCreationForm):
 
     def is_valid(self):
         return super(UserForm, self).is_valid()
+
+    def save(self, commit=True):
+        user = super(UserForm, self).save(commit)
+        file_name = "{}.svg".format(user.username)
+        url = "https://avatars.dicebear.com/api/croodles-neutral/{}".format(
+            file_name
+        )
+        profile_pic_response = urlretrieve(url)
+        profile_pic = open(profile_pic_response[0])
+        self.instance.picture.save(file_name, profile_pic)
+        return user
 
 
 class ProjectCreateForm(ModelForm):
