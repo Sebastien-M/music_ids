@@ -35,7 +35,7 @@ body {
     display: table;
     width: 100%;
     height: calc(100vh - 64px);
-    background-size: cover!important;
+    background-size: cover !important;
 }
 
 .main-title {
@@ -44,4 +44,21 @@ body {
     height: 100%;
     display: table-cell;
     vertical-align: middle;
+}
+
+.project-list{
+    margin-top: 30px;
+}
+
+.profile-picture {
+    width: 40px;
+    background-color: white;
+    margin-top: 10px;
+    transition: 0.3s;
+}
+
+.profile-picture:hover {
+    background-color: rgb(197, 197, 197);
+    /*-webkit-transition: background-color 300ms linear;*/
+    /*transition: background-color 300ms linear;*/
 }
