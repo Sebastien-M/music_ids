@@ -5,11 +5,11 @@ services:
     container_name: music_ids
     command: bash -c "python manage.py makemigrations &&
       python manage.py migrate &&
-      python manage.py collectstatic &&
+      python manage.py collectstatic --no-input &&
       gunicorn music_ideas.wsgi -b 0.0.0.0:8085 --workers 2"
     volumes:
       - .:/app
       - ./mids_static:/mids_static/
-      - ./media_volume:/media_volume/
+      - ./mids_media:/mids_media/
     ports:
       - "8085:8085"
