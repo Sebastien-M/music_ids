@@ -1,4 +1,5 @@
 {% extends "app/base.html" %}
+{% load utils %}
 {% block content %}
     <section class="main container project-list">
         <ul class="collection">
@@ -8,12 +9,26 @@
                     <span class="title">Nom: {{ project.name }}</span>
                     <p>Créé par: {{ project.creator.username }} <br>
                         Créé le: {{ project.created_at|date:"d/m/Y à H:i" }}
-                        <span class="right"><a href="{% url "ideas-detail" project.slug %}">Voir le projet</a></span>
+                        <span class="right">
+                            <a href="{% url "ideas-detail" project.slug %}">
+                                Voir le projet
+                            </a>
+                        </span>
 
                     </p>
-                    <a href="#!" class="secondary-content"><i class="material-icons" style="color: orange">grade</i></a>
+                    {% is_favorite user project as is_fav %}
+                    <a href="{% url "ideas-favorite" slug=project.slug %}"
+                       class="secondary-content fav">
+                        <i class="material-icons {% if is_fav %}fav-star-in{% else %}fav-star-out{% endif %}">grade</i>
+                    </a>
                 </li>
+
             {% endfor %}
+
         </ul>
     </section>
+    <script>
+        let fav_a = document.querySelector(".fav")
+        let star = document.querySelector(".fav_star")
+    </script>
 {% endblock %}

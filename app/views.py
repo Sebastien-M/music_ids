@@ -9,10 +9,10 @@ from django.shortcuts import redirect
 from django.urls import reverse, reverse_lazy
 from django.views import View
 from django.views.generic import ListView, CreateView, TemplateView, \
-    DetailView, UpdateView
+    DetailView, UpdateView, RedirectView
 
 from app.forms import UserForm, ProjectCreateForm, ProjectUpdateForm
-from app.models import Project
+from app.models import Project, FavoriteProject
 from app.utils.project_name_generator.generator import \
     generate_random_project_name
 
@@ -111,6 +111,28 @@ class ProjectUpdateView(LoginRequiredMixin, UpdateView):
 
     def get_success_url(self):
         return reverse_lazy("ideas-detail", kwargs={"slug": self.object.slug})
+
+
+class AddFavoriteView(LoginRequiredMixin, RedirectView):
+    login_url = reverse_lazy("user-login")
+
+    def get(self, request, *args, **kwargs):
+        source_url = request.headers["Referer"]
+        user = request.user
+        redirect_url = HttpResponseRedirect(source_url)
+        if not user or not user.is_authenticated:
+            return redirect_url
+        try:
+            project = Project.objects.get(slug=kwargs["slug"])
+        except Project.DoesNotExist:
+            return redirect_url
+        existing_favorite = FavoriteProject.objects.filter(user=user,
+                                                           project=project)
+        if existing_favorite.exists():
+            existing_favorite.delete()
+        else:
+            FavoriteProject.objects.create(user=user, project=project)
+        return redirect_url
 
 
 def random_project_name_view(request):
