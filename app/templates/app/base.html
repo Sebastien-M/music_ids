@@ -14,6 +14,9 @@
 <body>
 {% include "app/includes/navbar.html" %}
 {% block content %}{% endblock %}
+<small class="version-footer">
+    (Version {{ version }}-alpha)
+</small>
 <script src="{% static "js/materialize.min.js" %}"></script>
 </body>
 </html>

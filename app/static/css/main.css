@@ -63,6 +63,19 @@ body {
     /*transition: background-color 300ms linear;*/
 }
 
+.profile-picture-project {
+    border: 1px solid black;
+    width: 50px!important;
+    height: 50px!important;
+    background-color: white;
+    margin-top: 10px;
+    transition: 0.3s;
+}
+
+.profile-picture-project:hover {
+    background-color: rgb(197, 197, 197);
+}
+
 .fav-star-out {
     transition: 0.3s;
     color: gray;
@@ -79,4 +92,16 @@ body {
 
 .fav:hover > .fav-star-in {
     color: gray;
+}
+
+.version-footer {
+    font-size: x-small;
+    position: fixed;
+    color: #4f4f4f;
+    bottom: 0;
+    right: 5px;
+}
+
+#main-sentence {
+    font-size: xx-large;
 }
