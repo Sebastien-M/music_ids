@@ -4,6 +4,7 @@ charset-normalizer==2.0.7
 Django==3.2.8
 django-materializecss-form==1.1.17
 django-mysql==4.1.0
+gunicorn==20.1.0
 idna==3.3
 mysqlclient==2.0.3
 python-decouple==3.5

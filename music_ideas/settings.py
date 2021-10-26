@@ -127,14 +127,14 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
-STATIC_URL = '/static/'
+STATIC_URL = config('STATIC_URL')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 MEDIA_ROOT = os.path.join(BASE_DIR, config('MEDIA_ROOT_FOLDER'))
-MEDIA_URL = '/media/'
+MEDIA_URL = config('MEDIA_URL')
 STATIC_ROOT = os.path.join(BASE_DIR, config('STATIC_ROOT_FOLDER'))
 VERSION = "0.0.1"
 AUTH_USER_MODEL = "app.MidUser"
