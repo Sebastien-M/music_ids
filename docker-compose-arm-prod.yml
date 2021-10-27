@@ -1,0 +1,15 @@
+version: '3.1'
+services:
+  web:
+    build: .
+    container_name: music_ids
+    command: bash -c "python manage.py makemigrations &&
+      python manage.py migrate &&
+      python manage.py collectstatic --no-input &&
+      gunicorn music_ideas.wsgi -b 0.0.0.0:8085 --workers 2"
+    volumes:
+      - .:/app
+      - ./static:/static/
+      - ./media:/media/
+    ports:
+      - "8085:8085"
