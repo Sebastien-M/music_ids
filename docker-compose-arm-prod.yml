@@ -9,7 +9,7 @@ services:
       gunicorn music_ideas.wsgi -b 0.0.0.0:8085 --workers 2"
     volumes:
       - .:/app
-      - ./mids_static:/mids_static/
-      - ./mids_media:/mids_media/
+      - ./static:/static/
+      - ./media:/media/
     ports:
       - "8085:8085"
