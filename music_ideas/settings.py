@@ -136,5 +136,5 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 MEDIA_ROOT = os.path.join(BASE_DIR, config('MEDIA_ROOT_FOLDER'))
 MEDIA_URL = config('MEDIA_URL')
 STATIC_ROOT = os.path.join(BASE_DIR, config('STATIC_ROOT_FOLDER'))
-VERSION = "0.1.0"
+VERSION = "0.1.1"
 AUTH_USER_MODEL = "app.MidUser"
