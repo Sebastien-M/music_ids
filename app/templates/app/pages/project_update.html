@@ -6,7 +6,12 @@
             <div class="card-content center">
                 <form method="POST" enctype="multipart/form-data">
                     {% csrf_token %}
-                    {{ form|materializecss }}
+                    {{ form.name|materializecss }}
+                    {{ form.audio_file|materializecss }}
+                    {{ form.music_sheet|materializecss }}
+                    {{ form.ableton_project_file|materializecss }}
+                    {{ form.is_private|materializecss }}
+                    <br>
                     <button class="btn">Modifier</button>
                 </form>
             </div>

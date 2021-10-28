@@ -25,6 +25,9 @@
                         href="#">{{ project.creator.username }}</a></p>
                 <p>Dernière
                     modification: {{ project.modified_at|date:"d/m/Y" }}</p>
+                {% if project.is_private %}
+                    <p class="orange-text">Privé</p>
+                {% endif %}
             </div>
             <div class="card-tabs">
                 <ul class="tabs tabs-fixed-width">

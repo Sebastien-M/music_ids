@@ -4,7 +4,7 @@ from django.contrib.auth import logout
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
 from django.contrib.auth.views import LoginView
-from django.http import HttpResponseRedirect, HttpResponse
+from django.http import HttpResponseRedirect, HttpResponse, Http404
 from django.shortcuts import redirect
 from django.urls import reverse, reverse_lazy
 from django.views import View
@@ -56,7 +56,7 @@ class PersonalProjectListView(LoginRequiredMixin, ListView):
     login_url = reverse_lazy("user-login")
     model = Project
     context_object_name = "projects"
-    template_name = "app/pages/project_list.html"
+    template_name = "app/pages/my_project_list.html"
 
     def get_queryset(self):
         return super(PersonalProjectListView, self).get_queryset().filter(
@@ -74,6 +74,12 @@ class ProjectDetailView(LoginRequiredMixin, DetailView):
         context = super(ProjectDetailView, self).get_context_data(**kwargs)
         context["is_author"] = self.object.creator == self.request.user
         return context
+
+    def get_object(self, queryset=None):
+        project = super(ProjectDetailView, self).get_object(queryset)
+        if project.is_private and project.creator != self.request.user:
+            raise Http404()
+        return project
 
 
 class ProjectCreateView(LoginRequiredMixin, CreateView):
@@ -126,6 +132,8 @@ class AddFavoriteView(LoginRequiredMixin, RedirectView):
         try:
             project = Project.objects.get(slug=kwargs["slug"])
         except Project.DoesNotExist:
+            return redirect_url
+        if project.is_private and user != project.creator:
             return redirect_url
         existing_favorite = FavoriteProject.objects.filter(user=user,
                                                            project=project)

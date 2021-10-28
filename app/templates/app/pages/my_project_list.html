@@ -4,38 +4,39 @@
     <section class="main container project-list">
         <ul class="collection">
             {% for project in projects %}
-                {% if not project.is_private %}
-                    <li class="collection-item avatar">
-                        <img src="/media/{{ project.creator.picture }}"
-                             alt="Photo du profil"
-                             class="circle profile-picture-project">
-                        <span class="title">Nom: {{ project.name }}</span>
-                        <div class="row">
-                            <div class="col s12">
-                                Créé par: <a
-                                    href="#">{{ project.creator.username }}</a>
-                            </div>
-                            <div class="col m12">
-                                Créé
-                                le: {{ project.created_at|date:"d/m/Y à H:i" }}
-                            </div>
+                <li class="collection-item avatar">
+                    <img src="/media/{{ project.creator.picture }}"
+                         alt="Photo du profil"
+                         class="circle profile-picture-project">
+                    <span class="title">Nom: {{ project.name }}</span>
+                    <div class="row">
+                        <div class="col s12">
+                            Créé par:
+                            <a href="#">{{ project.creator.username }}</a>
                         </div>
-                        {% is_favorite user project as is_fav %}
-                        <span class="secondary-content fav-count right">
-                            {{ project.favorite_count }}
+                        <div class="col m12">
+                            Créé
+                            le: {{ project.created_at|date:"d/m/Y à H:i" }}
+                        </div>
+                    </div>
+                    {% is_favorite user project as is_fav %}
+                    <span class="secondary-content fav-count right">
+                        {% if project.is_private %}
+                            <span class="orange-text">Privé</span>
+                        {% endif %}
+                        {{ project.favorite_count }}
                     </span>
-                        <a href="{% url "ideas-favorite" slug=project.slug %}"
-                           class="secondary-content fav">
-                            <i class="material-icons {% if is_fav %}fav-star-in{% else %}fav-star-out{% endif %}">
-                                grade
-                            </i>
-                        </a>
-                        <a href="{% url "ideas-detail" project.slug %}"
-                           class="secondary-content" style="top:75px">
-                            Voir le projet
-                        </a>
-                    </li>
-                {% endif %}
+                    <a href="{% url "ideas-favorite" slug=project.slug %}"
+                       class="secondary-content fav">
+                        <i class="material-icons {% if is_fav %}fav-star-in{% else %}fav-star-out{% endif %}">
+                            grade
+                        </i>
+                    </a>
+                    <a href="{% url "ideas-detail" project.slug %}"
+                       class="secondary-content" style="top:75px">
+                        Voir le projet
+                    </a>
+                </li>
             {% endfor %}
         </ul>
     </section>
