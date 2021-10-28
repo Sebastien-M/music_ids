@@ -70,6 +70,10 @@ class Project(models.Model):
             file_types[file.project_file_type] = file
         return file_types
 
+    @property
+    def favorite_count(self):
+        return self.favorites.count()
+
 
 class ProjectFile(models.Model):
     name = models.CharField(max_length=60)
@@ -111,5 +115,6 @@ class FavoriteProject(models.Model):
                              on_delete=models.CASCADE,
                              db_index=True)
     project = models.ForeignKey(Project,
+                                related_name="favorites",
                                 on_delete=models.CASCADE,
                                 db_index=True)

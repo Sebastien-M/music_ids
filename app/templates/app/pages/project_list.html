@@ -11,7 +11,7 @@
                     <span class="title">Nom: {{ project.name }}</span>
                     <div class="row">
                         <div class="col s12">
-                            Créé par: {{ project.creator.username }}
+                            Créé par: <a href="#">{{ project.creator.username }}</a>
                         </div>
                         <div class="col m12">
                             Créé
@@ -19,9 +19,14 @@
                         </div>
                     </div>
                     {% is_favorite user project as is_fav %}
+                    <span class="secondary-content fav-count right">
+                            {{ project.favorite_count }}
+                    </span>
                     <a href="{% url "ideas-favorite" slug=project.slug %}"
                        class="secondary-content fav">
-                        <i class="material-icons {% if is_fav %}fav-star-in{% else %}fav-star-out{% endif %}">grade</i>
+                        <i class="material-icons {% if is_fav %}fav-star-in{% else %}fav-star-out{% endif %}">
+                            grade
+                        </i>
                     </a>
                     <a href="{% url "ideas-detail" project.slug %}"
                        class="secondary-content" style="top:75px">
