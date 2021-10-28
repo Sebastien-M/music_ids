@@ -37,6 +37,7 @@ class Project(models.Model):
     creator = models.ForeignKey(MidUser, on_delete=models.CASCADE)
     created_at = models.DateTimeField(blank=True, null=True)
     modified_at = models.DateTimeField(blank=True, null=True)
+    is_private = models.BooleanField(default=False)
 
     def __str__(self):
         return self.name

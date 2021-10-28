@@ -36,13 +36,15 @@ class UserForm(UserCreationForm):
 class ProjectCreateForm(ModelForm):
     class Meta:
         model = Project
-        fields = ("name", "audio_file")
+        fields = ("name", "audio_file", "music_sheet", "ableton_project_file",
+                  "is_private")
 
     name = forms.CharField(label="Nom du projet")
     audio_file = forms.FileField(label="Fichier audio")
     music_sheet = forms.FileField(label="Tablature", required=False)
     ableton_project_file = forms.FileField(label="Projet Ableton",
                                            required=False)
+    is_private = forms.BooleanField(label="Privé", required=False)
 
     def __init__(self, *args, **kwargs):
         self.user = kwargs.pop("user")
@@ -99,13 +101,14 @@ class ProjectCreateForm(ModelForm):
 class ProjectUpdateForm(ModelForm):
     class Meta:
         model = Project
-        fields = ("name", "audio_file")
+        fields = ("name", "audio_file", "is_private")
 
     name = forms.CharField(label="Nom du projet")
     audio_file = forms.FileField(label="Fichier audio", required=False)
     music_sheet = forms.FileField(label="Tablature", required=False)
     ableton_project_file = forms.FileField(label="Projet Ableton",
                                            required=False)
+    is_private = forms.BooleanField(label="Privé", required=False)
 
     def __init__(self, *args, **kwargs):
         self.user = kwargs.pop("user")
