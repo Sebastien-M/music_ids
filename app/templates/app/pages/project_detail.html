@@ -37,16 +37,24 @@
                 </div>
                 <div id="music-sheet">
                     <div class="center">
-                        <a class="waves-effect waves-light btn"
-                           href="/media/{{ project.joined_files.MUSIC_SHEET.file }}"><i
-                                class="material-icons right">file_download</i>Télécharger</a>
+                        {% if project.joined_files.MUSIC_SHEET %}
+                            <a class="waves-effect waves-light btn"
+                               href="/media/{{ project.joined_files.MUSIC_SHEET.file }}"><i
+                                    class="material-icons right">file_download</i>Télécharger</a>
+                        {% else %}
+                            <span>Pas de fichier</span>
+                        {% endif %}
                     </div>
                 </div>
                 <div id="ableton-project">
                     <div class="center">
-                        <a class="waves-effect waves-light btn"
-                           href="/media/{{ project.joined_files.ABLETON_PROJECT_FILE.file }}"><i
-                                class="material-icons right">file_download</i>Télécharger</a>
+                        {% if project.joined_files.ABLETON_PROJECT_FILE %}
+                            <a class="waves-effect waves-light btn"
+                               href="/media/{{ project.joined_files.ABLETON_PROJECT_FILE.file }}"><i
+                                    class="material-icons right">file_download</i>Télécharger</a>
+                        {% else %}
+                            <span>Pas de fichier</span>
+                        {% endif %}
                     </div>
                 </div>
             </div>
