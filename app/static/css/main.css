@@ -65,8 +65,8 @@ body {
 
 .profile-picture-project {
     border: 1px solid black;
-    width: 50px!important;
-    height: 50px!important;
+    width: 50px !important;
+    height: 50px !important;
     background-color: white;
     margin-top: 10px;
     transition: 0.3s;
@@ -104,4 +104,12 @@ body {
 
 #main-sentence {
     font-size: xx-large;
+}
+
+.fav-count {
+    right: 45px !important;
+    top: 18px !important;
+    text-decoration: none !important;
+    color: rgba(0, 0, 0, 0.87)!important;
+
 }
