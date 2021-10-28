@@ -44,7 +44,7 @@ class ProjectCreateForm(ModelForm):
     music_sheet = forms.FileField(label="Tablature", required=False)
     ableton_project_file = forms.FileField(label="Projet Ableton",
                                            required=False)
-    is_private = forms.BooleanField(label="Privé")
+    is_private = forms.BooleanField(label="Privé", required=False)
 
     def __init__(self, *args, **kwargs):
         self.user = kwargs.pop("user")
@@ -108,7 +108,7 @@ class ProjectUpdateForm(ModelForm):
     music_sheet = forms.FileField(label="Tablature", required=False)
     ableton_project_file = forms.FileField(label="Projet Ableton",
                                            required=False)
-    is_private = forms.BooleanField(label="Privé")
+    is_private = forms.BooleanField(label="Privé", required=False)
 
     def __init__(self, *args, **kwargs):
         self.user = kwargs.pop("user")

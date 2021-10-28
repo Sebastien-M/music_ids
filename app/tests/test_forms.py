@@ -2,6 +2,7 @@ import os
 
 from django.conf import settings
 from django.core.files.uploadedfile import SimpleUploadedFile
+from django.http import QueryDict
 from django.test import TestCase
 
 from app.enums import VALID_AUDIO_FILE_TYPES
@@ -73,7 +74,7 @@ class ProjectCreationFormBaseTestCase(TestCase):
             first_name="lel",
             last_name="lol",
             email="lul@lel.com",
-            password="testpassword01"
+            password="testpassword01",
         )
         self.form_data = {
             "name": "test_project",
