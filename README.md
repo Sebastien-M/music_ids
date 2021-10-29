@@ -1,4 +1,4 @@
-
+[![CircleCI](https://circleci.com/gh/Sebastien-M/music_ids/tree/master.svg?style=shield)](https://circleci.com/gh/Sebastien-M/music_ids/tree/master)
 # MusicIDs 
   
 MusicIDs is a Django web app to share personal music ideas and creations with other musicians.
