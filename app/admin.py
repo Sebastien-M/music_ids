@@ -14,3 +14,4 @@ class ProjectAdmin(admin.ModelAdmin):
 
 admin.site.register(Project, ProjectAdmin)
 admin.site.register(MidUser)
+admin.site.register(ProjectFile)
