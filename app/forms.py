@@ -44,6 +44,9 @@ class ProjectCreateForm(ModelForm):
     music_sheet = forms.FileField(label="Tablature", required=False)
     ableton_project_file = forms.FileField(label="Projet Ableton",
                                            required=False)
+    notes = forms.CharField(widget=forms.Textarea,
+                            label="Notes projet ableton",
+                            required=False)
     is_private = forms.BooleanField(label="Privé", required=False)
 
     def __init__(self, *args, **kwargs):
@@ -108,6 +111,9 @@ class ProjectUpdateForm(ModelForm):
     music_sheet = forms.FileField(label="Tablature", required=False)
     ableton_project_file = forms.FileField(label="Projet Ableton",
                                            required=False)
+    notes = forms.CharField(widget=forms.Textarea,
+                            label="Notes projet ableton",
+                            required=False)
     is_private = forms.BooleanField(label="Privé", required=False)
 
     def __init__(self, *args, **kwargs):
@@ -132,6 +138,7 @@ class ProjectUpdateForm(ModelForm):
         audio_file = self.cleaned_data.get("audio_file")
         music_sheet = self.cleaned_data.get("music_sheet")
         ableton_project_file = self.cleaned_data.get("ableton_project_file")
+        project_file_notes = self.cleaned_data.get("notes")
         if audio_file:
             ProjectFile.objects.update_or_create(
                 project_file_type=ProjectFileTypeChoices.AUDIO_FILE.name,
@@ -160,7 +167,17 @@ class ProjectUpdateForm(ModelForm):
                 defaults={
                     "file": ableton_project_file,
                     "name": ableton_project_file._name,
-                    "uploaded_at": timezone.now()
+                    "uploaded_at": timezone.now(),
+                    "notes": project_file_notes,
                 }
             )
+        if project_file_notes:
+            project_file = ProjectFile.objects.filter(
+                project_file_type=ProjectFileTypeChoices.ABLETON_PROJECT_FILE.name,
+                project=project,
+            )
+            if project_file.exists():
+                project_file = project_file.get()
+                project_file.notes = project_file_notes
+                project_file.save()
         return project

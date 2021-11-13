@@ -66,13 +66,30 @@
                             <a class="waves-effect waves-light btn"
                                href="/media/{{ project.joined_files.ABLETON_PROJECT_FILE.file }}"><i
                                     class="material-icons right">file_download</i>Télécharger</a>
+                            {% if project.joined_files.ABLETON_PROJECT_FILE.notes %}
+                                <div class="row" style="margin-top: 20px">
+                                    <div class="col s12 m12">
+                                        <div class="card">
+                                            <div class="card-content">
+                                                <span class="card-title">Notes</span>
+                                                <div class="left-align">
+                                                    {{ project.joined_files.ABLETON_PROJECT_FILE.notes|linebreaks }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                </div>
+                            {% endif %}
+
+
                         {% else %}
                             <span>Pas de fichier</span>
                         {% endif %}
-                    </div>
                 </div>
             </div>
         </div>
+    </div>
     </div>
     {% block js %}
         <script>

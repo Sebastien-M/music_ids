@@ -15,12 +15,12 @@ class MidUser(AbstractUser):
     email = models.EmailField(_('email address'), unique=True, db_index=True)
     username = models.CharField(error_messages={
         'unique': _('A user with that username already exists.')},
-                                help_text=_(
-                                    'Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.'),
-                                max_length=20, unique=True,
-                                validators=[UnicodeUsernameValidator()],
-                                verbose_name='username',
-                                db_index=True)
+        help_text=_(
+            'Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.'),
+        max_length=20, unique=True,
+        validators=[UnicodeUsernameValidator()],
+        verbose_name='username',
+        db_index=True)
     picture = models.FileField(upload_to="profile_pics/", null=True)
     REQUIRED_FIELDS = ["email"]
 
@@ -84,6 +84,7 @@ class ProjectFile(models.Model):
                                          choices=ProjectFileTypeChoices.choices)
     project = models.ForeignKey(Project, on_delete=models.CASCADE,
                                 related_name="files")
+    notes = models.TextField(blank=True, null=True)
 
     def __str__(self):
         return "{} - {}".format(self.name, self.project_file_type)
@@ -93,6 +94,11 @@ class ProjectFile(models.Model):
         if self.project_file_type == ProjectFileTypeChoices.AUDIO_FILE.name:
             if not self.is_valid_audio_file(self.file):
                 raise ValidationError("Not a valid file type")
+        if self.project_file_type != \
+                ProjectFileTypeChoices.ABLETON_PROJECT_FILE.name and \
+                self.notes:
+            raise ValidationError(
+                "You can set the field 'notes' only with a project file")
 
     @staticmethod
     def is_valid_audio_file(file):

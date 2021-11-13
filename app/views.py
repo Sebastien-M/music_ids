@@ -11,8 +11,9 @@ from django.views import View
 from django.views.generic import ListView, CreateView, TemplateView, \
     DetailView, UpdateView, RedirectView
 
+from app.enums import ProjectFileTypeChoices
 from app.forms import UserForm, ProjectCreateForm, ProjectUpdateForm
-from app.models import Project, FavoriteProject
+from app.models import Project, FavoriteProject, ProjectFile
 from app.utils.project_name_generator.generator import \
     generate_random_project_name
 
@@ -115,6 +116,17 @@ class ProjectUpdateView(LoginRequiredMixin, UpdateView):
         form_kwargs = super(ProjectUpdateView, self).get_form_kwargs()
         form_kwargs["user"] = self.request.user
         return form_kwargs
+
+    def get_form(self, form_class=None):
+        form = super(ProjectUpdateView, self).get_form(form_class)
+        existing_project_file = ProjectFile.objects.filter(
+            project_file_type=ProjectFileTypeChoices.ABLETON_PROJECT_FILE.name,
+            project=self.object
+        )
+        # import pdb;pdb.set_trace()
+        if existing_project_file.exists():
+            form.fields["notes"].initial = existing_project_file.get().notes
+        return form
 
     def get_success_url(self):
         return reverse_lazy("ideas-detail", kwargs={"slug": self.object.slug})
