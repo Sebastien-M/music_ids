@@ -1,4 +1,5 @@
 import json
+import mimetypes
 
 from django.contrib.auth import logout
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -123,7 +124,6 @@ class ProjectUpdateView(LoginRequiredMixin, UpdateView):
             project_file_type=ProjectFileTypeChoices.ABLETON_PROJECT_FILE.name,
             project=self.object
         )
-        # import pdb;pdb.set_trace()
         if existing_project_file.exists():
             form.fields["notes"].initial = existing_project_file.get().notes
         return form
@@ -163,3 +163,22 @@ def random_project_name_view(request):
         return HttpResponse(json.dumps(data), content_type="application/json")
     else:
         return HttpResponse(status=403)
+
+
+class DownloadAudioFileView(LoginRequiredMixin, View):
+    login_url = reverse_lazy("user-login")
+
+    def get(self, request, slug):
+        project = Project.objects.get(slug=slug)
+        if project.is_private and project.creator != self.request.user:
+            raise Http404()
+        audio_file = project.joined_files[
+            ProjectFileTypeChoices.AUDIO_FILE.name]
+        file_path = audio_file.file.path
+        file_name = audio_file.name
+        mime_type, _ = mimetypes.guess_type(file_path)
+        file_content = audio_file.file.read()
+        response = HttpResponse(file_content, content_type=mime_type)
+        response['Content-Disposition'] = "attachment; filename={}".format(
+            file_name)
+        return response

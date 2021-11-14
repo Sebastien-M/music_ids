@@ -1,5 +1,6 @@
 {% extends "app/base.html" %}
 {% load utils %}
+{% load static %}
 {% block content %}
     <div class="container main-panel">
         <div class="card">
@@ -40,53 +41,61 @@
             </div>
             <div class="card-content grey lighten-4">
                 <div id="audio-file">
+                    <div class="center row" id="waveform"
+                         style="position: relative">
+
+                    </div>
                     <div class="center row">
-                        <audio controls
-                               src="/media/{{ project.joined_files.AUDIO_FILE.file }}"
-                               class="col s12">
-                            Your browser does not support the
-                            <code>audio</code> element.
-                        </audio>
+                        <button class="btn play-pause-button"
+                                onclick="wavesurfer.playPause()">
+                            <i class="material-icons audio-button-icon">
+                                play_circle_filled
+                            </i>
+                        </button>
+
+                    </div>
+                    <div class="center">
+                        <a class="btn"
+                           href="{% url "download-audio-file" slug=project.slug %}"
+                           download="">Télécharger</a>
                     </div>
                 </div>
-                <div id="music-sheet">
-                    <div class="center">
-                        {% if project.joined_files.MUSIC_SHEET %}
-                            <a class="waves-effect waves-light btn"
-                               href="/media/{{ project.joined_files.MUSIC_SHEET.file }}"><i
-                                    class="material-icons right">file_download</i>Télécharger</a>
-                        {% else %}
-                            <span>Pas de fichier</span>
-                        {% endif %}
-                    </div>
+            </div>
+            <div id="music-sheet">
+                <div class="center">
+                    {% if project.joined_files.MUSIC_SHEET %}
+                        <a class="waves-effect waves-light btn"
+                           href="/media/{{ project.joined_files.MUSIC_SHEET.file }}"><i
+                                class="material-icons right">file_download</i>Télécharger</a>
+                    {% else %}
+                        <span>Pas de fichier</span>
+                    {% endif %}
                 </div>
-                <div id="ableton-project">
-                    <div class="center">
-                        {% if project.joined_files.ABLETON_PROJECT_FILE %}
-                            <a class="waves-effect waves-light btn"
-                               href="/media/{{ project.joined_files.ABLETON_PROJECT_FILE.file }}"><i
-                                    class="material-icons right">file_download</i>Télécharger</a>
-                            {% if project.joined_files.ABLETON_PROJECT_FILE.notes %}
-                                <div class="row" style="margin-top: 20px">
-                                    <div class="col s12 m12">
-                                        <div class="card">
-                                            <div class="card-content">
-                                                <span class="card-title">Notes</span>
-                                                <div class="left-align">
-                                                    {{ project.joined_files.ABLETON_PROJECT_FILE.notes|linebreaks }}
-                                                </div>
+            </div>
+            <div id="ableton-project">
+                <div class="center">
+                    {% if project.joined_files.ABLETON_PROJECT_FILE %}
+                        <a class="waves-effect waves-light btn"
+                           href="/media/{{ project.joined_files.ABLETON_PROJECT_FILE.file }}"><i
+                                class="material-icons right">file_download</i>Télécharger</a>
+                        {% if project.joined_files.ABLETON_PROJECT_FILE.notes %}
+                            <div class="row" style="margin-top: 20px">
+                                <div class="col s12 m12">
+                                    <div class="card">
+                                        <div class="card-content">
+                                            <span class="card-title">Notes</span>
+                                            <div class="left-align">
+                                                {{ project.joined_files.ABLETON_PROJECT_FILE.notes|linebreaks }}
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                                </div>
-                            {% endif %}
-
-
-                        {% else %}
-                            <span>Pas de fichier</span>
+                            </div>
+                            </div>
                         {% endif %}
-                </div>
+                    {% else %}
+                        <span>Pas de fichier</span>
+                    {% endif %}
             </div>
         </div>
     </div>
@@ -99,5 +108,29 @@
             });
 
         </script>
+        <script>
+            let wavesurfer = WaveSurfer.create({
+                container: '#waveform',
+                waveColor: '#a9a9a9',
+                progressColor: '#4f4f4f',
+                showTime: true,
+                opacity: 1,
+                backgroundColor: 'white',
+                plugins: [
+                    WaveSurfer.cursor.create({
+                        showTime: true,
+                        opacity: 1,
+                        customShowTimeStyle: {
+                            'background-color': '#000',
+                            color: '#fff',
+                            padding: '2px',
+                            'font-size': '10px'
+                        }
+                    })
+                ]
+            });
+            wavesurfer.load('/media/{{ project.joined_files.AUDIO_FILE.file }}');
+        </script>
+        <script src="{% static "js/playpause.js" %}"></script>
     {% endblock %}
 {% endblock %}
