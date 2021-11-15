@@ -1,5 +1,8 @@
 body {
     background-color: #f1f1f1;
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
 }
 
 .main-panel {
@@ -126,4 +129,9 @@ body {
 .description-container {
     margin-top: 20px;
     padding: 5px 10px 10px 10px;
+}
+
+.main-page-element {
+    flex: 1 0 auto;
+    margin-bottom: 50px;
 }
