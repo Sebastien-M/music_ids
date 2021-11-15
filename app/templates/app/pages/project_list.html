@@ -6,18 +6,23 @@
             {% for project in projects %}
                 {% if not project.is_private %}
                     <li class="collection-item avatar">
-                        <img src="/media/{{ project.creator.picture }}"
-                             alt="Photo du profil"
-                             class="circle profile-picture-project">
-                        <span class="title">Nom: {{ project.name }}</span>
-                        <div class="row">
+                        <a href="#">
+                            <img src="/media/{{ project.creator.picture }}"
+                                 alt="Photo du profil"
+                                 class="circle profile-picture-project">
+                        </a>
+                        <span class="title project_title">
+                            {{ project.name|title }}
+                        </span>
+                        <div class="row" style="margin-bottom: 0">
                             <div class="col s12">
-                                Créé par: <a
-                                    href="#">{{ project.creator.username }}</a>
+                                Tonalité: {{ project.key }}
                             </div>
-                            <div class="col m12">
-                                Créé
-                                le: {{ project.created_at|date:"d/m/Y à H:i" }}
+                            <div class="col s12">
+                                Tempo: {{ project.tempo }}
+                            </div>
+                            <div class="col s12">
+                                Créé le: {{ project.created_at|date:"d/m/Y" }}
                             </div>
                         </div>
                         {% is_favorite user project as is_fav %}
@@ -49,7 +54,7 @@
                 </li>
             {% else %}
                 <li class="disabled">
-                    <a href="#!">
+                    <a href="#">
                         <i class="material-icons">chevron_left</i>
                     </a>
                 </li>
@@ -73,7 +78,7 @@
                 </li>
             {% else %}
                 <li class="disabled">
-                    <a href="#!">
+                    <a href="#">
                         <i class="material-icons">chevron_right</i>
                     </a>
                 </li>

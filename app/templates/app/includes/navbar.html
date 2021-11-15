@@ -16,7 +16,7 @@
                         Projets</a></li>
                     <li><a href="{% url "ideas-create" %}">Créer un Projet</a>
                     </li>
-                    <li><a href="#">Trucs utiles</a></li>
+{#                    <li><a href="#">Trucs utiles</a></li>#}
                     <li>
                         <a class="dropdown-trigger"
                            href="#!" data-target="dropdown">
@@ -48,7 +48,7 @@
     {% if user.is_authenticated %}
         <li><a href="{% url "ideas-list" %}">Liste Des Projets</a></li>
         <li><a href="{% url "ideas-create" %}">Créer un Projet</a></li>
-        <li><a href="badges.html">Trucs utiles</a></li>
+{#        <li><a href="badges.html">Trucs utiles</a></li>#}
         <li class="divider"></li>
         <li><a href="#">Mon compte</a></li>
         <li><a href="{% url "user-logout" %}">Se déconnecter</a></li>
