@@ -37,17 +37,13 @@ class UserForm(UserCreationForm):
 class ProjectCreateForm(ModelForm):
     class Meta:
         model = Project
-        fields = ("name", "audio_file", "music_sheet", "ableton_project_file",
-                  "key", "tempo", "is_private")
+        fields = ("name", "audio_file", "key", "tempo", "is_private")
 
     name = forms.CharField(label="Nom du projet")
     audio_file = forms.FileField(label="Fichier audio")
-    music_sheet = forms.FileField(label="Tablature", required=False)
-    ableton_project_file = forms.FileField(label="Projet Ableton",
-                                           required=False)
-    notes = forms.CharField(widget=forms.Textarea,
-                            label="Notes projet ableton",
-                            required=False)
+    # notes = forms.CharField(widget=forms.Textarea,
+    #                         label="Notes projet ableton",
+    #                         required=False)
     key = forms.ChoiceField(choices=ProjectKeyChoices.choices,
                             label="Tonalité")
     is_private = forms.BooleanField(label="Privé", required=False)
@@ -58,9 +54,6 @@ class ProjectCreateForm(ModelForm):
 
     def save(self, commit=True):
         audio_file = self.cleaned_data.get("audio_file")
-        music_sheet = self.cleaned_data.get("music_sheet")
-        ableton_project_file = self.cleaned_data.get("ableton_project_file")
-
         project = Project.objects.create(name=self.cleaned_data.get("name"),
                                          creator=self.user,
                                          created_at=timezone.now())
@@ -69,18 +62,6 @@ class ProjectCreateForm(ModelForm):
                                    uploaded_at=timezone.now(),
                                    project_file_type=ProjectFileTypeChoices.AUDIO_FILE.name,
                                    project=project)
-        if music_sheet:
-            ProjectFile.objects.create(name=music_sheet._name,
-                                       file=music_sheet,
-                                       uploaded_at=timezone.now(),
-                                       project_file_type=ProjectFileTypeChoices.MUSIC_SHEET.name,
-                                       project=project)
-        if ableton_project_file:
-            ProjectFile.objects.create(name=ableton_project_file._name,
-                                       file=ableton_project_file,
-                                       uploaded_at=timezone.now(),
-                                       project_file_type=ProjectFileTypeChoices.ABLETON_PROJECT_FILE.name,
-                                       project=project)
         return Project
 
     def is_valid(self):
@@ -110,12 +91,9 @@ class ProjectUpdateForm(ModelForm):
 
     name = forms.CharField(label="Nom du projet")
     audio_file = forms.FileField(label="Fichier audio", required=False)
-    music_sheet = forms.FileField(label="Tablature", required=False)
-    ableton_project_file = forms.FileField(label="Projet Ableton",
-                                           required=False)
-    notes = forms.CharField(widget=forms.Textarea,
-                            label="Notes projet ableton",
-                            required=False)
+    # notes = forms.CharField(widget=forms.Textarea,
+    #                         label="Notes projet ableton",
+    #                         required=False)
     is_private = forms.BooleanField(label="Privé", required=False)
     key = forms.ChoiceField(choices=ProjectKeyChoices.choices,
                             label="Tonalité",
@@ -141,9 +119,6 @@ class ProjectUpdateForm(ModelForm):
     def save(self, commit=True):
         project = super(ProjectUpdateForm, self).save(commit)
         audio_file = self.cleaned_data.get("audio_file")
-        music_sheet = self.cleaned_data.get("music_sheet")
-        ableton_project_file = self.cleaned_data.get("ableton_project_file")
-        project_file_notes = self.cleaned_data.get("notes")
         if audio_file:
             ProjectFile.objects.update_or_create(
                 project_file_type=ProjectFileTypeChoices.AUDIO_FILE.name,
@@ -154,35 +129,4 @@ class ProjectUpdateForm(ModelForm):
                     "uploaded_at": timezone.now()
                 }
             )
-
-        if music_sheet:
-            ProjectFile.objects.update_or_create(
-                project_file_type=ProjectFileTypeChoices.MUSIC_SHEET.name,
-                project=project,
-                defaults={
-                    "file": music_sheet,
-                    "name": music_sheet._name,
-                    "uploaded_at": timezone.now()
-                }
-            )
-        if ableton_project_file:
-            ProjectFile.objects.update_or_create(
-                project_file_type=ProjectFileTypeChoices.ABLETON_PROJECT_FILE.name,
-                project=project,
-                defaults={
-                    "file": ableton_project_file,
-                    "name": ableton_project_file._name,
-                    "uploaded_at": timezone.now(),
-                    "notes": project_file_notes,
-                }
-            )
-        if project_file_notes:
-            project_file = ProjectFile.objects.filter(
-                project_file_type=ProjectFileTypeChoices.ABLETON_PROJECT_FILE.name,
-                project=project,
-            )
-            if project_file.exists():
-                project_file = project_file.get()
-                project_file.notes = project_file_notes
-                project_file.save()
         return project
