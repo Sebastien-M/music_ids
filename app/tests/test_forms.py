@@ -91,17 +91,7 @@ class ProjectCreationFormTestCases(ProjectCreationFormBaseTestCase):
                     settings.BASE_DIR,
                     "app/tests/test_files",
                     "music_test.mp3"), "rb"
-        ) as music_file, open(
-            os.path.join(
-                settings.BASE_DIR,
-                "app/tests/test_files",
-                "music_sheet.gpx"), "rb"
-        ) as music_sheet, open(
-            os.path.join(
-                settings.BASE_DIR,
-                "app/tests/test_files",
-                "ableton_project_file.ab"), "rb"
-        ) as ableton_file:
+        ) as music_file:
             form = ProjectCreateForm(user=self.user,
                                      data=self.form_data,
                                      files={
@@ -110,23 +100,13 @@ class ProjectCreationFormTestCases(ProjectCreationFormBaseTestCase):
                                              music_file.read(),
                                              content_type="audio/mpeg"
                                          ),
-                                         "music_sheet": SimpleUploadedFile(
-                                             "test_file.gpx",
-                                             music_sheet.read(),
-                                         ),
-                                         "ableton_project_file": SimpleUploadedFile(
-                                             "test_file.ab",
-                                             ableton_file.read(),
-                                         )
                                      })
             self.assertTrue(form.is_valid())
             form.save()
             new_project = Project.objects.get()
-            self.assertEqual(new_project.files.count(), 3)
+            self.assertEqual(new_project.files.count(), 1)
 
     def test_create_project_form_wrong_audio_file_type(self):
-        # Since only audio file is required we don't include
-        # music sheet & ableton files
         with open(
                 os.path.join(
                     settings.BASE_DIR,
