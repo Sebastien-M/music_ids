@@ -7,7 +7,8 @@ from django.core.files.uploadedfile import TemporaryUploadedFile
 from django.forms import ModelForm
 from django.utils import timezone
 
-from app.enums import VALID_AUDIO_FILE_TYPES, ProjectFileTypeChoices
+from app.enums import VALID_AUDIO_FILE_TYPES, ProjectFileTypeChoices, \
+    ProjectKeyChoices
 from app.models import MidUser, Project, ProjectFile
 
 
@@ -37,7 +38,7 @@ class ProjectCreateForm(ModelForm):
     class Meta:
         model = Project
         fields = ("name", "audio_file", "music_sheet", "ableton_project_file",
-                  "is_private")
+                  "key", "tempo", "is_private")
 
     name = forms.CharField(label="Nom du projet")
     audio_file = forms.FileField(label="Fichier audio")
@@ -47,6 +48,8 @@ class ProjectCreateForm(ModelForm):
     notes = forms.CharField(widget=forms.Textarea,
                             label="Notes projet ableton",
                             required=False)
+    key = forms.ChoiceField(choices=ProjectKeyChoices.choices,
+                            label="Tonalité")
     is_private = forms.BooleanField(label="Privé", required=False)
 
     def __init__(self, *args, **kwargs):
@@ -54,7 +57,6 @@ class ProjectCreateForm(ModelForm):
         super(ProjectCreateForm, self).__init__(*args, **kwargs)
 
     def save(self, commit=True):
-
         audio_file = self.cleaned_data.get("audio_file")
         music_sheet = self.cleaned_data.get("music_sheet")
         ableton_project_file = self.cleaned_data.get("ableton_project_file")
@@ -104,7 +106,7 @@ class ProjectCreateForm(ModelForm):
 class ProjectUpdateForm(ModelForm):
     class Meta:
         model = Project
-        fields = ("name", "audio_file", "is_private")
+        fields = ("name", "audio_file", "is_private", "key", "tempo",)
 
     name = forms.CharField(label="Nom du projet")
     audio_file = forms.FileField(label="Fichier audio", required=False)
@@ -115,6 +117,9 @@ class ProjectUpdateForm(ModelForm):
                             label="Notes projet ableton",
                             required=False)
     is_private = forms.BooleanField(label="Privé", required=False)
+    key = forms.ChoiceField(choices=ProjectKeyChoices.choices,
+                            label="Tonalité",
+                            required=False)
 
     def __init__(self, *args, **kwargs):
         self.user = kwargs.pop("user")

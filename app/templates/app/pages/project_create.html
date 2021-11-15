@@ -17,6 +17,8 @@
                     {{ form.audio_file|materializecss }}
                     {{ form.music_sheet|materializecss }}
                     {{ form.ableton_project_file|materializecss }}
+                    {{ form.key|materializecss }}
+                    {{ form.tempo|materializecss }}
                     {{ form.notes|materializecss }}
                     {{ form.is_private|materializecss }}
                     <br>
@@ -45,6 +47,11 @@
                 name_field.focus()
                 name_field.value = response["name"]
             }
+
+            document.addEventListener('DOMContentLoaded', function () {
+                let elems = document.querySelectorAll('select');
+                M.FormSelect.init(elems);
+            });
 
 
         </script>

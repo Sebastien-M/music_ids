@@ -7,7 +7,8 @@ from django.db import models
 from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
 
-from app.enums import VALID_AUDIO_FILE_TYPES, ProjectFileTypeChoices
+from app.enums import VALID_AUDIO_FILE_TYPES, ProjectFileTypeChoices, \
+    ProjectKeyChoices
 from app.managers import CustomUserManager
 
 
@@ -38,6 +39,9 @@ class Project(models.Model):
     created_at = models.DateTimeField(blank=True, null=True)
     modified_at = models.DateTimeField(blank=True, null=True)
     is_private = models.BooleanField(default=False)
+    tempo = models.IntegerField(max_length=3, blank=True, null=True)
+    key = models.CharField(choices=ProjectKeyChoices.choices, blank=True,
+                           null=True, max_length=100)
 
     def __str__(self):
         return self.name

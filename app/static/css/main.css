@@ -73,7 +73,7 @@ body {
 }
 
 .profile-picture-project:hover {
-    background-color: rgb(197, 197, 197);
+    background-color: rgb(225, 224, 224);
 }
 
 .fav-star-out {
@@ -112,4 +112,13 @@ body {
     text-decoration: none !important;
     color: rgba(0, 0, 0, 0.87)!important;
 
+}
+
+.dropdown-content li > a, .dropdown-content li > span {
+    color: black!important;
+}
+
+.private-tag {
+    position: absolute;
+    font-size: medium;
 }

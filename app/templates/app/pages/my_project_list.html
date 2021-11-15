@@ -5,25 +5,30 @@
         <ul class="collection">
             {% for project in projects %}
                 <li class="collection-item avatar">
-                    <img src="/media/{{ project.creator.picture }}"
-                         alt="Photo du profil"
-                         class="circle profile-picture-project">
-                    <span class="title">Nom: {{ project.name }}</span>
-                    <div class="row">
+                    <a href="#">
+                        <img src="/media/{{ project.creator.picture }}"
+                             alt="Photo du profil"
+                             class="circle profile-picture-project">
+                    </a>
+                    <span class="title project_title">
+                        {{ project.name }}
+                    </span>
+                    {% if project.is_private %}
+                        <span class="orange-text"> (Privé)</span>
+                    {% endif %}
+                    <div class="row" style="margin-bottom: 0">
                         <div class="col s12">
-                            Créé par:
-                            <a href="#">{{ project.creator.username }}</a>
+                            Tonalité: {{ project.key }}
                         </div>
-                        <div class="col m12">
-                            Créé
-                            le: {{ project.created_at|date:"d/m/Y à H:i" }}
+                        <div class="col s12">
+                            Tempo: {{ project.tempo }}
+                        </div>
+                        <div class="col s12">
+                            Créé le: {{ project.created_at|date:"d/m/Y" }}
                         </div>
                     </div>
                     {% is_favorite user project as is_fav %}
                     <span class="secondary-content fav-count right">
-                        {% if project.is_private %}
-                            <span class="orange-text">Privé</span>
-                        {% endif %}
                         {{ project.favorite_count }}
                     </span>
                     <a href="{% url "ideas-favorite" slug=project.slug %}"
@@ -50,7 +55,7 @@
                 </li>
             {% else %}
                 <li class="disabled">
-                    <a href="#!">
+                    <a href="#">
                         <i class="material-icons">chevron_left</i>
                     </a>
                 </li>
@@ -74,7 +79,7 @@
                 </li>
             {% else %}
                 <li class="disabled">
-                    <a href="#!">
+                    <a href="#">
                         <i class="material-icons">chevron_right</i>
                     </a>
                 </li>

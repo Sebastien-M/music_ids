@@ -10,6 +10,8 @@
                     {{ form.audio_file|materializecss }}
                     {{ form.music_sheet|materializecss }}
                     {{ form.ableton_project_file|materializecss }}
+                    {{ form.tempo|materializecss }}
+                    {{ form.key|materializecss }}
                     {{ form.notes|materializecss }}
                     {{ form.is_private|materializecss }}
                     <br>
@@ -18,4 +20,12 @@
             </div>
         </div>
     </section>
+    {% block js %}
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                let elems = document.querySelectorAll('select');
+                M.FormSelect.init(elems);
+            });
+        </script>
+    {% endblock %}
 {% endblock %}

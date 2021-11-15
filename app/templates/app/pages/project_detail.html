@@ -6,6 +6,9 @@
         <div class="card">
             <div class="card-content">
                 <span class="card-title center">{{ project.name }}
+                {% if project.is_private %}
+                    <span class="orange-text private-tag">&nbsp;(Privé)</span>
+                {% endif %}
                     <span class="right" style="font-size: small">
                         {% if is_author %}
                             <a href="{% url "ideas-update" slug=project.slug %}">Modifier</a>
@@ -26,9 +29,8 @@
                         href="#">{{ project.creator.username }}</a></p>
                 <p>Dernière
                     modification: {{ project.modified_at|date:"d/m/Y" }}</p>
-                {% if project.is_private %}
-                    <p class="orange-text">Privé</p>
-                {% endif %}
+                <p>Tonalité: {{ project.key }}</p>
+                <p>Tempo: {{ project.tempo }}</p>
             </div>
             <div class="card-tabs">
                 <ul class="tabs tabs-fixed-width">
