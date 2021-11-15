@@ -5,7 +5,7 @@ from django.core.files.uploadedfile import SimpleUploadedFile
 from django.http import QueryDict
 from django.test import TestCase
 
-from app.enums import VALID_AUDIO_FILE_TYPES
+from app.enums import VALID_AUDIO_FILE_TYPES, ProjectKeyChoices
 from app.forms import UserForm, ProjectCreateForm
 from app.models import MidUser, Project
 
@@ -78,6 +78,8 @@ class ProjectCreationFormBaseTestCase(TestCase):
         )
         self.form_data = {
             "name": "test_project",
+            "key": ProjectKeyChoices.F.name,
+            "tempo": "120"
         }
 
 
