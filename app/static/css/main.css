@@ -122,3 +122,8 @@ body {
     position: absolute;
     font-size: medium;
 }
+
+.description-container {
+    margin-top: 20px;
+    padding: 5px 10px 10px 10px;
+}

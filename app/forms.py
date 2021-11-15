@@ -37,13 +37,14 @@ class UserForm(UserCreationForm):
 class ProjectCreateForm(ModelForm):
     class Meta:
         model = Project
-        fields = ("name", "audio_file", "key", "tempo", "is_private")
+        fields = (
+        "name", "audio_file", "key", "tempo", "is_private", "description")
 
     name = forms.CharField(label="Nom du projet")
     audio_file = forms.FileField(label="Fichier audio")
-    # notes = forms.CharField(widget=forms.Textarea,
-    #                         label="Notes projet ableton",
-    #                         required=False)
+    description = forms.CharField(widget=forms.Textarea,
+                                  label="Description",
+                                  required=False)
     key = forms.ChoiceField(choices=ProjectKeyChoices.choices,
                             label="Tonalité")
     is_private = forms.BooleanField(label="Privé", required=False)
@@ -56,6 +57,8 @@ class ProjectCreateForm(ModelForm):
         audio_file = self.cleaned_data.get("audio_file")
         project = Project.objects.create(name=self.cleaned_data.get("name"),
                                          creator=self.user,
+                                         description=self.cleaned_data.get(
+                                             "description"),
                                          created_at=timezone.now())
         ProjectFile.objects.create(name=audio_file._name,
                                    file=audio_file,
@@ -87,13 +90,14 @@ class ProjectCreateForm(ModelForm):
 class ProjectUpdateForm(ModelForm):
     class Meta:
         model = Project
-        fields = ("name", "audio_file", "is_private", "key", "tempo",)
+        fields = (
+            "name", "audio_file", "is_private", "key", "tempo", "description")
 
     name = forms.CharField(label="Nom du projet")
     audio_file = forms.FileField(label="Fichier audio", required=False)
-    # notes = forms.CharField(widget=forms.Textarea,
-    #                         label="Notes projet ableton",
-    #                         required=False)
+    description = forms.CharField(widget=forms.Textarea,
+                                  label="Description",
+                                  required=False)
     is_private = forms.BooleanField(label="Privé", required=False)
     key = forms.ChoiceField(choices=ProjectKeyChoices.choices,
                             label="Tonalité",

@@ -6,9 +6,9 @@
         <div class="card">
             <div class="card-content">
                 <span class="card-title center">{{ project.name }}
-                {% if project.is_private %}
-                    <span class="orange-text private-tag">&nbsp;(Privé)</span>
-                {% endif %}
+                    {% if project.is_private %}
+                        <span class="orange-text private-tag">&nbsp;(Privé)</span>
+                    {% endif %}
                     <span class="right" style="font-size: small">
                         {% if is_author %}
                             <a href="{% url "ideas-update" slug=project.slug %}">Modifier</a>
@@ -29,23 +29,21 @@
                         href="#">{{ project.creator.username }}</a></p>
                 <p>Dernière
                     modification: {{ project.modified_at|date:"d/m/Y" }}</p>
-                <p>Tonalité: {{ project.key }}</p>
-                <p>Tempo: {{ project.tempo }}</p>
             </div>
             <div class="card-tabs">
                 <ul class="tabs tabs-fixed-width">
-                    <li class="tab"><a class="active" href="#audio-file">Fichier
-                        audio</a></li>
-                    <li class="tab"><a href="#music-sheet">Tablature</a></li>
-                    <li class="tab"><a href="#ableton-project">Projet
-                        Ableton</a></li>
+                    <li class="tab">
+                        <a class="active" href="#audio-file">Fichier audio</a>
+                    </li>
+                    <li class="tab">
+                        <a href="#music-sheet">Commentaires</a>
+                    </li>
                 </ul>
             </div>
             <div class="card-content grey lighten-4">
                 <div id="audio-file">
                     <div class="center row" id="waveform"
                          style="position: relative">
-
                     </div>
                     <div class="center row">
                         <button class="btn play-pause-button"
@@ -54,53 +52,32 @@
                                 play_circle_filled
                             </i>
                         </button>
-
                     </div>
                     <div class="center">
                         <a class="btn"
                            href="{% url "download-audio-file" slug=project.slug %}"
                            download="">Télécharger</a>
                     </div>
-                </div>
-            </div>
-            <div id="music-sheet">
-                <div class="center">
-                    {% if project.joined_files.MUSIC_SHEET %}
-                        <a class="waves-effect waves-light btn"
-                           href="/media/{{ project.joined_files.MUSIC_SHEET.file }}"><i
-                                class="material-icons right">file_download</i>Télécharger</a>
-                    {% else %}
-                        <span>Pas de fichier</span>
-                    {% endif %}
-                </div>
-            </div>
-            <div id="ableton-project">
-                <div class="center">
-                    {% if project.joined_files.ABLETON_PROJECT_FILE %}
-                        <a class="waves-effect waves-light btn"
-                           href="/media/{{ project.joined_files.ABLETON_PROJECT_FILE.file }}"><i
-                                class="material-icons right">file_download</i>Télécharger</a>
-                        {% if project.joined_files.ABLETON_PROJECT_FILE.notes %}
-                            <div class="row" style="margin-top: 20px">
-                                <div class="col s12 m12">
-                                    <div class="card">
-                                        <div class="card-content">
-                                            <span class="card-title">Notes</span>
-                                            <div class="left-align">
-                                                {{ project.joined_files.ABLETON_PROJECT_FILE.notes|linebreaks }}
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            </div>
+                    <div class="white description-container">
+                        <h5>Description</h5>
+                        <p>Tonalité: {{ project.key }}</p>
+                        <p>Tempo: {{ project.tempo }}</p>
+                        <br>
+                        <p>{% if project.description %}
+                            {{ project.description|linebreaks }}
+                        {% else %}
+                            <span>Aucune description</span>
                         {% endif %}
-                    {% else %}
-                        <span>Pas de fichier</span>
-                    {% endif %}
+                        </p>
+                    </div>
+                </div>
+                <div id="music-sheet">
+                    <div class="center">
+                        <p>Fonctionnalité à venir...</p>
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
     </div>
     {% block js %}
         <script>
@@ -108,9 +85,6 @@
                 let el = document.querySelectorAll('.tabs');
                 M.Tabs.init(el);
             });
-
-        </script>
-        <script>
             let wavesurfer = WaveSurfer.create({
                 container: '#waveform',
                 waveColor: '#a9a9a9',
