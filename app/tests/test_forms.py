@@ -79,7 +79,8 @@ class ProjectCreationFormBaseTestCase(TestCase):
         self.form_data = {
             "name": "test_project",
             "key": ProjectKeyChoices.F.name,
-            "tempo": "120"
+            "tempo": "120",
+            "description": "test",
         }
 
 

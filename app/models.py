@@ -42,6 +42,7 @@ class Project(models.Model):
     tempo = models.IntegerField(max_length=3, blank=True, null=True)
     key = models.CharField(choices=ProjectKeyChoices.choices, blank=True,
                            null=True, max_length=100)
+    description = models.TextField(blank=True)
 
     def __str__(self):
         return self.name
