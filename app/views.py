@@ -14,7 +14,7 @@ from django.views.generic import ListView, CreateView, TemplateView, \
 
 from app.enums import ProjectFileTypeChoices
 from app.forms import UserForm, ProjectCreateForm, ProjectUpdateForm
-from app.models import Project, FavoriteProject, ProjectFile
+from app.models import Project, FavoriteProject, ProjectFile, MidUser
 from app.utils.project_name_generator.generator import \
     generate_random_project_name
 
@@ -156,15 +156,6 @@ class AddFavoriteView(LoginRequiredMixin, RedirectView):
         return redirect_url
 
 
-def random_project_name_view(request):
-    random_name = generate_random_project_name()
-    data = {"name": random_name}
-    if request.user.is_authenticated:
-        return HttpResponse(json.dumps(data), content_type="application/json")
-    else:
-        return HttpResponse(status=403)
-
-
 class DownloadAudioFileView(LoginRequiredMixin, View):
     login_url = reverse_lazy("user-login")
 
@@ -182,3 +173,30 @@ class DownloadAudioFileView(LoginRequiredMixin, View):
         response['Content-Disposition'] = "attachment; filename={}".format(
             file_name)
         return response
+
+
+class UserDetailView(LoginRequiredMixin, ListView):
+    login_url = reverse_lazy("user-login")
+    model = Project
+    context_object_name = "projects"
+    template_name = "app/pages/user_detail.html"
+    paginate_by = 8
+
+    def get_queryset(self):
+        user_id = self.request.path_info.split("/")[-1]
+        return Project.objects.filter(creator__id=user_id)
+
+    def get_context_data(self, **kwargs):
+        context = super(UserDetailView, self).get_context_data(**kwargs)
+        user_id = self.request.path_info.split("/")[-1]
+        context["mid_user"] = MidUser.objects.get(id=user_id)
+        return context
+
+
+def random_project_name_view(request):
+    random_name = generate_random_project_name()
+    data = {"name": random_name}
+    if request.user.is_authenticated:
+        return HttpResponse(json.dumps(data), content_type="application/json")
+    else:
+        return HttpResponse(status=403)

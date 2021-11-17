@@ -25,8 +25,11 @@
                         </a>
                     </span>
                 </span><br>
-                <p>Créé le: {{ project.created_at|date:"d/m/Y" }} par <a
-                        href="#">{{ project.creator.username }}</a></p>
+                <p>Créé le: {{ project.created_at|date:"d/m/Y" }} par
+                    <a href="{% url "user-detail" pk=project.creator.id %}">
+                    {{ project.creator.username }}
+                </a>
+                </p>
                 <p>Dernière
                     modification: {{ project.modified_at|date:"d/m/Y" }}</p>
             </div>
@@ -36,7 +39,7 @@
                         <a class="active" href="#audio-file">Fichier audio</a>
                     </li>
                     <li class="tab">
-                        <a href="#music-sheet">Commentaires</a>
+                        <a href="#comments">Commentaires</a>
                     </li>
                 </ul>
             </div>
@@ -71,7 +74,7 @@
                         </p>
                     </div>
                 </div>
-                <div id="music-sheet">
+                <div id="comments">
                     <div class="center">
                         <p>Fonctionnalité à venir...</p>
                     </div>

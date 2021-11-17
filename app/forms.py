@@ -13,11 +13,15 @@ from app.models import MidUser, Project, ProjectFile
 
 
 class UserForm(UserCreationForm):
+    description = forms.CharField(widget=forms.Textarea,
+                                  label="Quelques mots sur vous",
+                                  required=False)
+
     class Meta:
         model = MidUser
         field_classes = {'username': UsernameField}
         fields = ("username", "first_name", "last_name", "email", "password1",
-                  "password2")
+                  "password2", "description")
 
     def is_valid(self):
         return super(UserForm, self).is_valid()
@@ -38,7 +42,7 @@ class ProjectCreateForm(ModelForm):
     class Meta:
         model = Project
         fields = (
-        "name", "audio_file", "key", "tempo", "is_private", "description")
+            "name", "audio_file", "key", "tempo", "is_private", "description")
 
     name = forms.CharField(label="Nom du projet")
     audio_file = forms.FileField(label="Fichier audio")

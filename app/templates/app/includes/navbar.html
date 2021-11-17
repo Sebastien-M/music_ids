@@ -5,18 +5,17 @@
             <a href="{% url "index-view" %}" class="brand-logo">Music Ids</a>
             <a href="#" data-target="mobile-demo"
                class="sidenav-trigger"
-            style="margin-right: 0">
+               style="margin-right: 0">
                 <i class="material-icons">menu</i>
             </a>
             <ul class="right hide-on-med-and-down">
                 {% if user.is_authenticated %}
-                    <li><a href="{% url "ideas-list" %}">Liste Des Projets</a>
+                    <li>
+                        <a href="{% url "ideas-list" %}">Liste Des Projets</a>
                     </li>
-                    <li><a href="{% url "personal-ideas-list" %}">Mes
-                        Projets</a></li>
-                    <li><a href="{% url "ideas-create" %}">Créer un Projet</a>
+                    <li>
+                        <a href="{% url "ideas-create" %}">Créer un Projet</a>
                     </li>
-{#                    <li><a href="#">Trucs utiles</a></li>#}
                     <li>
                         <a class="dropdown-trigger"
                            href="#!" data-target="dropdown">
@@ -29,11 +28,11 @@
                                     account_circle
                                 {% endif %}
                             </i>
-
                         </a>
                     </li>
                 {% else %}
-                    <li><a href="{% url "user-create" %}">Créer un compte</a>
+                    <li>
+                        <a href="{% url "user-create" %}">Créer un compte</a>
                     </li>
                     <li><a href="{% url "user-login" %}">Se connecter</a></li>
                 {% endif %}
@@ -48,9 +47,9 @@
     {% if user.is_authenticated %}
         <li><a href="{% url "ideas-list" %}">Liste Des Projets</a></li>
         <li><a href="{% url "ideas-create" %}">Créer un Projet</a></li>
-{#        <li><a href="badges.html">Trucs utiles</a></li>#}
+        {#        <li><a href="badges.html">Trucs utiles</a></li>#}
         <li class="divider"></li>
-        <li><a href="#">Mon compte</a></li>
+        <li><a href="{% url "user-detail" pk=user.pk %}">Mon compte</a></li>
         <li><a href="{% url "user-logout" %}">Se déconnecter</a></li>
     {% else %}
         <li><a href="{% url "user-create" %}">Créer un compte</a></li>
@@ -60,7 +59,7 @@
 <ul id="dropdown" class="dropdown-content dropdown-auth"
     style="min-width: 150px">
     {% if user.is_authenticated %}
-        <li><a href="#">Mon compte</a></li>
+        <li><a href="{% url "user-detail" pk=user.pk %}">Mon compte</a></li>
         <li><a href="{% url "user-logout" %}">Se déconnecter</a></li>
     {% endif %}
 </ul>

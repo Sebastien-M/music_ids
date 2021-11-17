@@ -60,6 +60,21 @@ body {
     transition: 0.3s;
 }
 
+.profile-picture-detail {
+    /*position: absolute;*/
+    width: 80px;
+    background-color: white;
+    /*margin-top: 40px;*/
+    margin-top: 10px;
+    border: 1px solid #b7b7b7;
+}
+
+#profile-detail-username{
+    position: absolute;
+    margin-top: 40px;
+    margin-left: 10px;
+}
+
 .profile-picture:hover {
     background-color: rgb(197, 197, 197);
     /*-webkit-transition: background-color 300ms linear;*/
@@ -134,4 +149,8 @@ body {
 .main-page-element {
     flex: 1 0 auto;
     margin-bottom: 50px;
+}
+
+.user-detail-tabs>.tab>a {
+    color: black!important;
 }
