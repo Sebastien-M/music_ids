@@ -23,6 +23,7 @@ class MidUser(AbstractUser):
         verbose_name='username',
         db_index=True)
     picture = models.FileField(upload_to="profile_pics/", null=True)
+    description = models.TextField(blank=True, null=True)
     REQUIRED_FIELDS = ["email"]
 
     objects = CustomUserManager()

@@ -6,7 +6,7 @@
             {% for project in projects %}
                 {% if not project.is_private %}
                     <li class="collection-item avatar">
-                        <a href="#">
+                        <a href="{% url "user-detail" pk=project.creator.id %}">
                             <img src="/media/{{ project.creator.picture }}"
                                  alt="Photo du profil"
                                  class="circle profile-picture-project">

@@ -1,0 +1,150 @@
+{% extends "app/base.html" %}
+{% load static %}
+{% load utils %}
+{% block content %}
+    <div class="container main-page-element" style="margin-top: 20px">
+        <div class="row">
+            <div class="col s12">
+                <div class="card ">
+                    <div class="card-content">
+                        <div class="card-title center-block">
+                            <img src="/media/{{ mid_user.picture }}"
+                                 alt="Photo du profil"
+                                 class="circle profile-picture-detail">
+                            <span id="profile-detail-username">
+                                {{ mid_user.username|title }}
+                            </span>
+                        </div>
+                        <p>
+                            {% if mid_user.description %}
+                                {{ mid_user.description }}
+                            {% else %}
+                                Aucune description.
+                            {% endif %}
+                        </p>
+                    </div>
+                    <div class="divider"></div>
+                    <div class="" style="padding: 0">
+                        <div class="row">
+                            <div class="col s12">
+                                <div class="card-tabs">
+                                    <ul class="tabs user-detail-tabs tabs-fixed-width">
+                                        <li class="tab col s3">
+                                            <a href="#info"
+                                               class="black-text">Infos</a>
+                                        </li>
+                                        <li class="tab col s3">
+                                            <a href="#uploaded-files"
+                                               class="black-text">
+                                                Projets créés
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div id="info" class="col s12">
+                                    <div class="">
+                                        <p>Membre depuis
+                                            le: {{ mid_user.date_joined|date:"d/m/Y" }}</p>
+                                    </div>
+                                </div>
+                                <div id="uploaded-files" class="col s12">
+                                    <ul class="collection user-projects">
+                                        {% for project in projects %}
+                                            {% if not project.is_private or project.is_private and project.creator == user %}
+                                                <li class="collection-item avatar">
+                                                    <span class="title project_title">
+                                                        {{ project.name|title }}
+                                                    </span>
+                                                    {% if project.is_private %}
+                                                        <span class="orange-text"> (Privé)</span>
+                                                    {% endif %}
+                                                    <div class="row"
+                                                         style="margin-bottom: 0">
+                                                        <div class="col s12">
+                                                            Tonalité: {{ project.key }}
+                                                        </div>
+                                                        <div class="col s12">
+                                                            Tempo: {{ project.tempo }}
+                                                        </div>
+                                                        <div class="col s12">
+                                                            Créé
+                                                            le: {{ project.created_at|date:"d/m/Y" }}
+                                                        </div>
+                                                    </div>
+                                                    {% is_favorite user project as is_fav %}
+                                                    <span class="secondary-content fav-count right">
+                                                            {{ project.favorite_count }}
+                                                    </span>
+                                                    <a href="{% url "ideas-favorite" slug=project.slug %}"
+                                                       class="secondary-content fav">
+                                                        <i class="material-icons {% if is_fav %}fav-star-in{% else %}fav-star-out{% endif %}">
+                                                            grade
+                                                        </i>
+                                                    </a>
+                                                    <a href="{% url "ideas-detail" project.slug %}"
+                                                       class="secondary-content"
+                                                       style="top:75px">
+                                                        Voir le projet
+                                                    </a>
+                                                </li>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </ul>
+                                    {% if is_paginated %}
+                                        <ul class="pagination center">
+                                            {% if page_obj.has_previous %}
+                                                <li>
+                                                    <a href="?page={{ page_obj.previous_page_number }}#uploaded-files">
+                                                        <i class="material-icons">chevron_left</i>
+                                                    </a>
+                                                </li>
+                                            {% else %}
+                                                <li class="disabled">
+                                                    <a href="#">
+                                                        <i class="material-icons">chevron_left</i>
+                                                    </a>
+                                                </li>
+                                            {% endif %}
+                                            {% for i in paginator.page_range %}
+                                                {% if page_obj.number == i %}
+                                                    <li class="active">
+                                                        <a href="#">{{ i }}</a>
+                                                    </li>
+                                                {% else %}
+                                                    <li class="waves-effect">
+                                                        <a href="?page={{ i }}#uploaded-files">{{ i }}</a>
+                                                    </li>
+                                                {% endif %}
+                                            {% endfor %}
+                                            {% if page_obj.has_next %}
+                                                <li>
+                                                    <a href="?page={{ page_obj.next_page_number }}#uploaded-files">
+                                                        <i class="material-icons">chevron_right</i>
+                                                    </a>
+                                                </li>
+                                            {% else %}
+                                                <li class="disabled">
+                                                    <a href="#">
+                                                        <i class="material-icons">chevron_right</i>
+                                                    </a>
+                                                </li>
+                                            {% endif %}
+                                        </ul>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% block js %}
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                let el = document.querySelectorAll('.tabs');
+                M.Tabs.init(el);
+            });
+        </script>
+    {% endblock %}
+{% endblock %}
