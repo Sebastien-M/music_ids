@@ -59,12 +59,13 @@ docker-compose run web python manage.py createsuperuser
 Once done the command `docker-compose up` should be okay and should launch the application connected to the database.
 
 ## Running the tests
-
-Lol tests?
+```
+python manage.py run test
+```
 
 
 ## Deployment
-  TODO
+.....................
 
 ## Versioning
 
